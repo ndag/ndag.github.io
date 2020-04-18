@@ -1,6 +1,8 @@
 ## Welcome the Network Data Analysis Group webpage
 
-Networks are mathematical formalisms that capture relations within and between data sets. Over the past several decades, much progress has been made in explaining real-world phenomena in the biological, physical, and social sciences using network theory, and in particular, graph theory. The complexity of data has increased rapidly in recent years, partly because of the following reasons: (1) It is now easier to produce large volumes of data, e.g. in social networks, and (2) Technological progress has enabled better data capture and extraction, e.g. in biological networks. The objective of the growing field of Network Data Analysis is to devise methods for analyzing such complex network data. Some aspects of these methods are listed below.
+Networks are mathematical formalisms that capture relations within and between data sets. Over the past several decades, much progress has been made in explaining real-world phenomena in the biological, physical, and social sciences using network theory, and in particular, graph theory. The complexity of data has increased rapidly in recent years, partly because of the following reasons: 
+1 - It is now easier to produce large volumes of data, e.g. in social networks, and 
+2 - Technological progress has enabled better data capture and extraction, e.g. in biological networks. The objective of the growing field of Network Data Analysis is to devise methods for analyzing such complex network data. Some aspects of these methods are listed below.
 
 Our research is supported by NSF-IIS grant 1422400 and NSF-DMS grant 1723003.
 
