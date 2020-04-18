@@ -10,6 +10,21 @@ Our research is supported by NSF-IIS grant 1422400 and NSF-DMS grant 1723003.
 A natural question to ask when comparing two networks is: are these networks the same, or are they different? The difference between two networks can be formally quantified by developing metrics on the collections of all networks. Understanding the behavior of such metrics is one of our ongoing projects. See the related papers [[1]](https://arxiv.org/abs/1708.04727), [[2]](https://arxiv.org/abs/1804.02820), and [[3]](https://arxiv.org/abs/1808.04337).
 
 
+### Clustering networks
+Clustering methods, in particular hierarchical clustering methods, can be very useful in exploratory data analysis. Classical hierarchical clustering reveals the presence of clusters across a range of scales for metric datasets (i.e. "well-behaved" datasets), from which researchers are often able to find hidden groupings and patterns. However, general network data tends to be more "wild." We are interested in being able to provide hierachical clustering schemes that simplify the visualization of even very general network data, while providing theoretical guarantees on the worst-case distortion that can occur from applying such clustering methods. See [1] and [2].
+
+### Persistent Homology of Networks
+An ongoing project in our group is to better understand the persistent homology of a general network. In addition to devising robust theoretical methods for producing persistence diagrams from networks, we are interested in using our methods to glean new insights into the structures of a wide range of network datasets. See the related works [1], [2], and [3].
+
+### Zigzag Persistent Homology of Dynamic Networks
+When studying flocking/swarming behaviors in animals one is interested in quantifying and comparing the dynamics of the clustering induced by the coalescence and disbanding of animals in different groups. Motivated by this, we study the problem of obtaining persistent homology based summaries of time-dependent metric data. Our research has produced the notions of formigrams, and distances between dynamic metric spaces, and dynamic graphs. Fot the interphase with the data anlysis part, we use concepts from zigzag persistent homology. Read more in https://research.math.osu.edu/networks/formigrams/.
+
+### Zigzag Persistent Homology for Neural Data
+We apply Zigzag Persistent Homology towards understanding the amount of information contained in the spike trains of hippocampal place cells. Previous work has established that simply knowing which groups of place cells fire together in an animal's hippocampus is sufficient to extract the global topology of the animal's physical environment. We model a system where collections of place cells group and ungroup according to short-term plasticity rules. We obtain the surprising result that in experiments with spurious firing, the accuracy of the extracted topological information decreases with the persistence (beyond a certain regime) of the cell groups. This suggests that synaptic transience, or forgetting, is a mechanism by which the brain counteracts the effects of spurious place cell activity. PLoS ONE link.
+
+### k
+
+
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
