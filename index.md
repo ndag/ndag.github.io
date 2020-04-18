@@ -22,7 +22,13 @@ When studying flocking/swarming behaviors in animals one is interested in quanti
 ### Zigzag Persistent Homology for Neural Data
 We apply Zigzag Persistent Homology towards understanding the amount of information contained in the spike trains of hippocampal place cells. Previous work has established that simply knowing which groups of place cells fire together in an animal's hippocampus is sufficient to extract the global topology of the animal's physical environment. We model a system where collections of place cells group and ungroup according to short-term plasticity rules. We obtain the surprising result that in experiments with spurious firing, the accuracy of the extracted topological information decreases with the persistence (beyond a certain regime) of the cell groups. This suggests that synaptic transience, or forgetting, is a mechanism by which the brain counteracts the effects of spurious place cell activity. PLoS ONE link.
 
-### k
+### Metric graph approximation of geodesic spaces
+A standard result in metric geometry is that every compact geodesic metric space can be  approximated arbitrarily well by finite metric graphs in the Gromov-Hausdorff sense. It is well known that the  first Betti number of the approximating graphs may blow up as the approximation  gets finer.
+
+In our work, given a compact geodesic metric \(X\), we define a sequence \((\delta^X_n)_{n \geq 0}\) of non-negative real numbers by $$\delta^X_n:=\inf \{d_{GH}(X,G): G \text{ a finite metric graph, } \beta_1(G)\leq n \} .$$
+ By construction, and the above result, this is a non-increasing sequence with limit \(0\). We study this sequence and its rates of decay with \(n\). We also identify a precise relationship between the sequence and the first Vietoris-Rips persistence barcode of \(X\). Furthermore, we specifically analyze \(\delta_0^X\)  and find upper and lower bounds based on hyperbolicity and other metric invariants. As a consequence of the tools we develop, our work also provides a Gromov-Hausdorff stability result for the Reeb construction on geodesic metric spaces with respect to the function  given by distance to a reference point.
+
+<a href="https://arxiv.org/abs/1809.05566">Arxiv link</a>.
 
 
 
