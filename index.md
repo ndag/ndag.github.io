@@ -1,8 +1,6 @@
-## Welcome to GitHub Pages
+## Welcome the Network Data Analysis Group webpage
 
-You can use the [editor on GitHub](https://github.com/ndag/ndag.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Networks are mathematical formalisms that capture relations within and between data sets. Over the past several decades, much progress has been made in explaining real-world phenomena in the biological, physical, and social sciences using network theory, and in particular, graph theory. The complexity of data has increased rapidly in recent years, partly because of the following reasons: (1) It is now easier to produce large volumes of data, e.g. in social networks, and (2) Technological progress has enabled better data capture and extraction, e.g. in biological networks. The objective of the growing field of Network Data Analysis is to devise methods for analyzing such complex network data. Some aspects of these methods are listed below.
 
 ### Markdown
 
