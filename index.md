@@ -7,7 +7,7 @@ Networks are mathematical formalisms that capture relations within and between d
 Our research is supported by NSF-IIS grant 1422400 and NSF-DMS grant 1723003.
 
 ### Network metrics
-<img align="right" src="figure-network.png"> A natural question to ask when comparing two networks is: are these networks the same, or are they different? The difference between two networks can be formally quantified by developing metrics on the collections of all networks. Understanding the behavior of such metrics is one of our ongoing projects. See the related papers [[1]](https://arxiv.org/abs/1708.04727), [[2]](https://arxiv.org/abs/1804.02820), and [[3]](https://arxiv.org/abs/1808.04337).
+<img align="left" src="figure-network.png"> A natural question to ask when comparing two networks is: are these networks the same, or are they different? The difference between two networks can be formally quantified by developing metrics on the collections of all networks. Understanding the behavior of such metrics is one of our ongoing projects. See the related papers [[1]](https://arxiv.org/abs/1708.04727), [[2]](https://arxiv.org/abs/1804.02820), and [[3]](https://arxiv.org/abs/1808.04337).
 
 
 ### Clustering networks
