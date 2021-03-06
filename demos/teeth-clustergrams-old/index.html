@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    .box_square{
+        height: 80vh;
+        width: 80vh;
+        float:left;
+        position: relative;
+    }
+
+    .box_teeth{
+        width: 20vw;
+        height: 20vw;
+        float: left;
+        position: relative;
+    }
+
+    .box_label{
+        width: 4vw;
+        height:80vh;
+        float:left;
+        position: relative;
+        z-index: 1;
+    }
+
+    .box_scale{
+        width: 4vw;
+        height:30vw;
+        float:left;
+        position: relative;
+    }
+
+    .box_den{
+        top: 80vh;
+        width: 80vh;
+        height: 13vh;
+        float:left;
+        position: absolute;
+    }
+
+    /*.box_label:hover {*/
+      /*-ms-transform: scale(1.5); !* IE 9 *!*/
+      /*-webkit-transform: scale(1.5); !* Safari 3-8 *!*/
+      /*transform: scale(1.5);*/
+    /*}*/
+
+</style>
+<body>
+<form>
+    <label>Order
+        <select id="order1" name="order">
+        <option value="orig">Optimal</option>
+        <option value="diet">Diet</option>
+        <option value="family">Family</option>
+        <option value="genus">Genus</option>
+        </select>
+    </label>
+    <label>Clustering method
+        <select id="linkage1" name="linkage">
+        <option value="single">Single</option>
+        <option value="complete">Complete</option>
+        <option value="average">Average</option>
+        </select>
+    </label>
+</form>
+<div class="background" style="position: relative; width: 100vw; height: 100vh;">
+    <!--<div id="heatmap" style="position: absolute; top: 0px; left: 0px; width: 30%; height: 50%; background-color: pink;margin: 0px;padding: 0px;border: 0px;"></div>-->
+    <!--<div id="scale" style="position: absolute; top: 0px; left: 30%; width: 5%; height: 50%; float:left; background-color: white;margin: 0px;padding: 0px;border: 0px;"></div>-->
+    <!--<div id="dendro"  style="position: absolute; top: 80%; left: 0px; width: 30%; height: 20%; background-color: white;"></div>-->
+    <!--<div id="pic1" style="position: absolute; top: 0px; left: 600px; width: 500px; height: 375px; background-color: white;"></div>-->
+    <!--<div id="pic2" style="position: absolute; top: 0px; left: 1100px; width: 500px; height: 375px; background-color: white;"></div>-->
+    <!--<div id="pic1" style="position: absolute; top: 0px; left: 40%; width: 30%; height: 37.5%; background-color: white;"></div>-->
+    <!--<div id="pic2" style="position: absolute; top: 0px; left: 70%; width: 30%; height: 37.5%; background-color: white;"></div>-->
+
+    <!--<div class="box_text" id="label" style="background-color: white;"></div>-->
+    <div class="box_square" id="heatmap" style="background-color: pink;"></div>
+
+    <!--<div class="box_square" id="heatmap" style="top: 0px; left: 0px; background-color: white;"></div>-->
+    <div class="box_label" id="label" style=" background-color: white;"></div>
+
+    <div class="box_scale" id="scale" style=" background-color: white;"></div>
+    <div class="box_teeth" id="pic1" style=" background-color: white;"></div>
+    <div class="box_teeth" id="pic2" style=" background-color: white;"></div>
+    <div class="box_den" id="dendro"  style="background-color: white;"></div>
+</div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+<script>
+    function precise(x) {
+        return Number.parseFloat(x).toPrecision(2);
+    }
+
+    $(document).ready(function () {
+    var order1 = "orig";
+    function update_order() {
+        var den_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/lnk_";
+        var heatmap_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/map_text_";
+        var label_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/label_";
+        // console.log(order1)
+
+        if (order1 == "orig"){
+            label_path += "diet.txt";
+            heatmap_path += $("#linkage1").val() + "_array.json";
+            den_path += $("#linkage1").val() + "_den.json";
+        }
+        else{
+            label_path += $("#order1").val() + ".txt";
+            heatmap_path += $("#order1").val() + "_array.json";
+            den_path += $("#linkage1").val() + "_" + $("#order1").val() + ".json";
+        }
+        console.log(den_path)
+        console.log(heatmap_path)
+        console.log(label_path)
+        // if (order1 === "diet") {
+        //     // den_path = "https://api.myjson.com/bins/1dgiky";
+        //     den_path = den_path + "diet.json";
+        //     heatmap_path = heatmap_path + "diet_array.json";
+        //     label_path = label_path + "diet.txt";
+        //
+        // } else if (order1 === "orig") {
+        //     // den_path = "https://api.myjson.com/bins/ljgss";
+        //     den_path = den_path + "den.json";
+        //     heatmap_path = heatmap_path + "single_array.json";
+        //     label_path = label_path + "diet.txt";
+        // } else if (order1 === "family") {
+        //     den_path = den_path + "family.json";
+        //     heatmap_path = heatmap_path + "family_array.json";
+        //     label_path = label_path + "family.txt";
+        //
+        // } else if (order1 === "genus") {
+        //     den_path = den_path + "genus.json";
+        //     heatmap_path = heatmap_path + "genus_array.json";
+        //     label_path = label_path + "genus.txt";
+        // }
+
+        // function read_order(path){
+        //     var out_array = [];
+        //     $.getJSON(path).done(function(d) {
+        //         var diet_array = JSON.parse(d)[0];
+        //         var i = 0;
+        //         for (var key in diet_array){
+        //             out_array[i] = diet_array[key];
+        //             i += 1;
+        //         }
+        //     });
+        //     console.log(out_array)
+        //     return out_array;
+        // }
+        //
+        // var order = read_order(heatmap_path);
+        //
+        // console.log(order);
+
+        var background = $('.background');
+
+        var den_width = background.find("#dendro").width(), // width of dendrogram, should be the same as the width of the heatmap
+            den_height = background.find("#dendro").height(), // height of dendrogram, should be the same as the height of the heatmap
+            den_leftx = 0, // x coordinate of left start point of dendrogram
+            den_leffy = 0; // y coordinate of left start point of dendrogram
+
+
+        var hm_width = background.find("#heatmap").width(),
+            hm_height = background.find("#heatmap").height(),
+            hm_grid_size = (hm_width / 116);
+        console.log(hm_width)
+        // console.log(hm_height)
+        // Maximum value in matrix is 0.25358
+        var myColor = d3.scaleSequential()
+            .interpolator(d3.interpolateInferno)
+            .domain([0,0.26]);
+
+        var mouseover = function (d) {
+            var x_val = Math.round(d3.select(this).attr("x") / hm_grid_size) + 1;
+            var y_val = Math.round(d3.select(this).attr("y") / hm_grid_size) + 1;
+
+            var wd = background.find("#pic1").width();
+            var ht = background.find("#pic1").height();
+            var x_pic = d3.select("#pic1").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            x_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + x_val + ".png")
+                });
+
+            var y_pic = d3.select("#pic2").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            y_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + y_val + ".png")
+                });
+
+            d3.select(this)
+                .style("stroke", "black")
+        };
+
+        var mouseleave = function (d) {
+            d3.select("#pic1").selectAll("svg").remove();
+            d3.select("#pic2").selectAll("svg").remove();
+
+            d3.select(this)
+                .style("stroke", "none")
+        };
+        d3.select("#heatmap").selectAll("svg").remove();
+        var svg = d3.select("#heatmap").append("svg")
+            .attr("width", hm_width)
+            .attr("height", hm_height)
+
+        $.getJSON("https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/map_text.json").done(function(data){
+            var data_array = JSON.parse(data);
+            var diet_array
+
+            //CHANGE THIS JSON to change the ordering
+            $.getJSON(heatmap_path).done(function(d){
+                diet_array = JSON.parse(d);
+                for(var i = 0; i < 116; i++){
+                    for(var j = 0; j < 116; j++) {
+                        var columnX = diet_array[0][i];
+                        var columnY = diet_array[0][j];
+                        var value = data_array[columnX][columnY];
+                        svg.append("rect")
+                            .attr("x", function (d) {
+                                return i * hm_grid_size;
+                            })
+                            .attr("y", function (d) {
+                                return j * hm_grid_size;
+                            })
+                            .attr("class", "hour bordered")
+                            .attr("width", hm_grid_size)
+                            .attr("height", hm_grid_size)
+                            .attr("stroke", "none")
+                            .style("stroke-width", 1)
+                            .style("fill", function (d) {
+                                return myColor(value)
+                            })
+                            .on("mouseover", mouseover)
+                            .on("mouseleave", mouseleave)
+                    }
+                }
+            });
+        });
+
+
+        //LABELS
+        var label_enlarge = function(){
+            $(this).css({'font-size': '8px'})
+                .css({'font-weight': 'bold'})
+        };
+
+        var label_return = function(){
+            $(this).css({'font-size': '6px'})
+                .css({'font-weight': 'normal'})
+        };
+
+        var wd = background.find("#label").width();
+        var ht = background.find("#label").height();
+        d3.select("#label").selectAll("svg").remove();
+        var label = d3.select("#label").append("svg")
+            .attr("width", wd)
+            .attr("height", ht);
+
+        for(var i = 0; i < 116; i++){
+            label.append("line")
+                .attr("x1", 0)
+                .attr("y1", function(d) { return i * hm_grid_size + 2; })
+                .attr("x2", 2)
+                .attr("y2", function(d) { return i * hm_grid_size + 2; })
+                .style("stroke", "blue")
+        }
+        if (order1 === "orig"){
+            for(var i = 0; i < 116; i++){
+                label.append("text")
+                    .attr("x", 3)
+                    .attr("y", function(d) { return i * hm_grid_size + 5; })
+                    .text(i + 1)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "6px")
+                    .attr("fill", "black")
+                    .on("mouseover", label_enlarge)
+                    .on("mouseleave", label_return);
+            }
+        } else {
+            d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+
+                //CHANGE THIS JSON to change the ordering
+                $.getJSON(heatmap_path).done(function(d){
+                    diet_array = JSON.parse(d);
+
+                    for(var i = 0; i < 116; i++){
+                        var numVal = diet_array[0][i];
+                        label.append("text")
+                            .attr("x", 3)
+                            .attr("y", function(d) { return numVal * hm_grid_size + 5; })
+                            .text(data[i][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "5px")
+                            .attr("fill", "black")
+                            .on("mouseover", label_enlarge)
+                            .on("mouseleave", label_return);
+                    }
+                });
+            });
+        }
+
+
+
+        //LEGEND
+        var wd = background.find("#scale").width();
+        var ht = background.find("#scale").height();
+        d3.select("#scale").selectAll("svg").remove();
+        var legend = d3.select("#scale").append("svg")
+            .attr("width", wd)
+            .attr("height", ht);
+
+
+        for(var i = 0; i < 11; i++){
+            legend.append("rect")
+                .attr("x", 0)
+                .attr("y", function(d){ return ((11-i) * 10) + 20})
+                .attr("class", "hour bordered")
+                .attr("width", wd/3)
+                .attr("height", 20)
+                .attr("stroke", "none")
+                .style("fill", function(d) { return myColor(i * 0.025)} )
+
+            legend.append("text")
+                .attr("x", wd/3+1)
+                .attr("y", function(d){ return ((11-i) * 11) + 28})
+                .text(function(d){return precise(i * 0.025)})
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "8px")
+                .attr("fill", "black");
+        }
+        $.getJSON()
+
+        // plot dendrogram
+        $.getJSON(den_path)
+            .done(function (data) {
+                // console.log(data)
+
+                //    adding the canvas
+                d3.select("#dendro").selectAll("svg").remove();
+                var canvas = d3.select("#dendro")
+                    .append("svg")
+                    .attr("width", den_width)
+                    .attr("height", den_height)
+
+                var line = d3.line()
+                    .x(function (d) {
+                        return d.x * den_width + den_leftx;
+                    })
+                    .y(function (d) {
+                        return d.y * den_height + den_leffy;
+                    });
+
+                data.forEach(function (d, i) {
+                    canvas.append("path")
+                        .attr("d", line(d))
+                        .style("stroke", "blue")
+                        .style("fill", "none")
+                })
+            });
+
+        $("#order1").change(function () {
+            order1 = $("#order1").val()
+            console.log("changing order")
+            console.log(order1)
+            update_order()
+        })
+
+        $("#linkage1").change(function () {
+            linkage1 = $("#linkage1").val()
+            console.log("changing order")
+            console.log(linkage1)
+            update_order()
+        })
+    }
+    update_order()
+
+    })
+
+
+
+
+</script>
+</body>
+</html>

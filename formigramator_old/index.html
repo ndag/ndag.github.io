@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+    <meta charset="utf-8">
+    <title>Formigramator</title>
+    <link rel="stylesheet" href="Style/style.css">
+    </head>
+    
+    
+<body style="color: rgb(0, 0, 0);" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+    
+<div id="container">
+<div style="background-color: transparent;" id="banner">
+    <div class="row">  
+        
+        <h1>Formigramator: Formigram calculation tool <font size="-1">Developed by <b>Dave Verano</b> and <b>Woojin Kim</b> </font></h1> 
+        <p>  Given a time-evoloving network (i.e. dynamic network), the evolution of connected components can be summarized into the so-called <b> formigram </b>. Formigrams can be viewed as endriched <em> Reeb graphs </em>, a popular tool in topological data analysis. The concept of formigrams is so intuitive that one can grasp the essential idea from the figure below. </p> 
+            
+            <img src="images/Formi_concept_illustration.png" width="950" height="400" vspace="50">
+      </div>
+    <div class="row">
+        <h2> Input for Formigramator </h2>
+             
+              Here is an example of the input dynamic network data:  <br/>
+            <div class="b">
+                    <code>
+                        {{1,1},{2,2},{3,3},{4,4}} <br/>
+                        t1 C {1,2} <br/>
+                        t2 A {5} <br/>
+                        t3 B {1,2} <br/>
+                        t4 R {1} <br/>
+                        EOF<br/>
+                    </code>
+             </div>
+                    To interpret, the input dynamic network begins with 4 vertices, named 1,2,3,4 (Line 1). At time t1, vertices 1 and 2 are <b>C</b>onnected by an edge (Line 2). At time t2, a new vertex 5 is <b>A</b>dded. At time t3, the connection {1,2} <b>B</b>reaks (Line 3). At time t4, the vertex 1 is <b>R</b>emoved (Line 4). The input ends with <b>EOF</b>, the abbreviation for "End of file". 
+         
+    </div>
+    
+    <h2> User guide of Formigramator <font size="-1"> Written by <b>Woojin Kim</b> </font></h2>  
+        
+            <ol> 
+            <li>Go to <a target="_blank" href="https://editor.p5js.org/">https://editor.p5js.org/</a> and follow the instruction below. 
+            <br/>
+            <img src="images/p5_1.png" width="820" height="370",  vspace="30">
+            </li>
+                <li> Delete the default filler in the editor. Then, copy and paste the code in <a href="images/formigramator.txt" download> formigramator.txt </a> into the editor.  </li>
+            <li> Click "Sketch" at the top and click "Add File". Then, input "edges.txt". </li>
+                
+            <li> Click ">" right below the play button and click "edges.txt" </li>
+            <li> Copy and paste the code below into the editor for "edges.txt". <br/>
+              <div class="b">
+                    <code>
+                        {{1,1},{2,2},{3,3},{4,4}} <br/>
+                        t1 C {1,2} <br/>
+                        t2 A {5} <br/>
+                        t3 B {1,2} <br/>
+                        t4 R {1} <br/>
+                        EOF<br/>
+                    </code>
+                </div>
+            </li>
+            <li> Click the play button and then you can see the output formigram in the preview window.</li>
+            <li> You can compute your own dynamic network by modifying "edges.txt", and tuning the parameters as below. 
+            </li>                 
+                <img src="images/demo1.png" width="600" height="200",  vspace="50"> 
+            <br/>Refer to <sup id="cite1" class="reference">  <a href="#cite1">[1],[2]</a>
+            </sup> for the smoothing parameter for formigrams. 
+        </ol>
+    Here is an example of an output: <br/>
+    <img src="images/formi_calculation.png" width="900" height="300",  vspace="50">  
+    </div>
+    
+        <h2> Applications: Clustering feature analysis of dynamic metric data </h2>
+    <div class="row">
+          <div class="column">
+      <img src="images/delta_formigram.png" width="100%", vspace="20">
+          </div>
+          <div class="column">
+               Given a dynamic point cloud, fix a certain connectivity parameter &delta;>0. At each time, any two points within distance &delta; in the point cloud are connected by an edge; this yields a dynamic network. We summarize/visualize the evolution of connected components of this dynamic network into the formigram.
+        </div>      
+    </div>  
+        <h2>Relevant Links</h2>
+              
+      
+        <ol class="references">
+            <li id="cite1">            
+                <span class="reference-text">
+                    W. Kim, F. Memoli (2017), 
+                    <i> Stable Signatures for Dynamic Metric Spaces via Zigzag Persistent Homology,
+                    </i>                   
+                    <a rel="nofollow" class="external text" target="_blank" href=" https://arxiv.org/abs/1712.04064">arXiv:1712.04064
+                    </a>            
+                </span>            
+            </li>
+            <li id="cite1">            
+                <span class="reference-text">
+                    W. Kim, F. Memoli (2018), 
+                    <i> Formigrams: Clustering Summaries of Dynamic Data,
+                    </i>                   
+                    <a rel="nofollow" class="external text" target="_blank" href="https://pdfs.semanticscholar.org/b68f/65dce888dc17f400549e3b35cfe810af813d.pdf#page=190">Proceedings of Canadian Conference on Computational Geometry 2018                   </a>            
+                </span>            
+            </li>
+            <li> Formigram webpage, <a target="_blank" href="https://research.math.osu.edu/networks/formigrams/">https://research.math.osu.edu/networks/formigrams/</a>
+            </li>
+        </ol>      
+    </div>    
+       <!-- <font color="blue"> Organize the following using bibliography formats. </font>-->            
+</body>      
+</html>    

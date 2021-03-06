@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="description" content="Network Data Analysis Group" />
+<meta name="keywords" content="network data analysis, topological data analysis, computational topology" /><title>Network Data Analysis: Home</title>
+
+
+
+<style>
+  .bottom-three {
+     margin-bottom: 2cm;
+  }
+</style>
+
+<style>
+  .bottom-three-long {
+     margin-bottom: 4cm;
+  }
+</style>
+
+
+
+<link href="defaultstyles.css" rel="stylesheet" media="screen" /></head>
+<body style="color: rgb(0, 0, 0);" alink="#ee0000" link="#0000ee" vlink="#551a8b">
+<div id="container">
+<div id="wrapper">
+<div style="background-color: transparent;" id="banner">
+<h1 style="color: rgb(16, 16, 16); background-color: transparent;">Network
+Data Analysis Group</h1>
+<span style="color: rgb(16, 16, 16);">The Ohio State
+University</span></div>
+<div id="nav">
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="Papers.html">Papers</a></li>
+<li><a href="People.html">People</a></li>
+<li><a href="Links.html">Links</a></li>
+<li><a href="Activities.html">Activities</a></li>
+<li><a href="Datasets.html">Software and Data</a></li>
+<li></li>
+</ul>
+</div>
+<div id="page">
+<div style="width: 920px;" id="content"><span style="color: rgb(64, 64, 64); font-family: proximanova,Arial,Helvetica,sans-serif; font-size: 14px; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: 21px; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 1; word-spacing: 0px; display: inline ! important; float: none; background-color: rgb(255, 255, 255);"><span style="font-family: Helvetica,Arial,sans-serif;">Networks
+are mathematical formalisms&nbsp;that capture relations within and
+between data sets. Over the past several decades, much progress has
+been made in explaining real-world phenomena in
+the&nbsp;biological,
+physical, and social sciences using network theory, and in particular,
+graph theory. The complexity of data has increased rapidly in recent
+years, partly because of the following reasons: (1) It is now easier to
+produce large volumes of data, e.g. in social networks, and (2)
+Technological progress has enabled better data capture and extraction,
+e.g. in biological networks. The objective of the growing field of
+Network Data Analysis is to devise methods for analyzing such complex
+network data. Some aspects of these methods are listed below.<br /><br />
+Our research is supported by NSF-IIS grant 1422400 and NSF-DMS grant 1723003.
+  <br><br>
+
+
+<IMG SRC="photos/figure-network.png" style="width: 220px; height: 120px;" hspace="20" vspace="10"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Network metrics</span>
+<br>
+A natural question to ask when comparing two networks is: are these
+networks the same, or are they different? The difference between two
+networks can be formally quantified by developing metrics on the
+collections of all networks. Understanding the behavior of such metrics
+is one of our ongoing projects.
+<br>
+</p>
+
+
+<IMG SRC="photos/figure-clust-net.png" style="width: 220px; height: 100px;" hspace="20" vspace="10"  ALIGN="left" />
+
+<p class="bottom-three">
+<span style="font-weight: bold;">Clustering networks</span>
+<br>
+Clustering methods, in particular hierarchical clustering methods, can be very
+useful in exploratory data analysis. Classical hierarchical clustering
+reveals the presence of clusters across a range of scales for metric
+datasets (i.e. "well-behaved" datasets), from which researchers
+are often able to find hidden groupings and patterns. However, general
+network data tends to be more "wild." We are interested in being able
+to provide hierachical clustering schemes that simplify the
+visualization of even very general network data, while providing
+theoretical guarantees on the worst-case distortion that can occur from
+applying such clustering methods.
+<br>
+</p>
+
+
+<IMG SRC="photos/figure-dowker.png" style="width: 220px; height: 100px;" hspace="20" vspace="10"  ALIGN="left" />
+
+<p class="bottom-three">
+<span style="font-weight: bold;">Persistent Homology of Networks</span>
+<br>
+An ongoing project in our group is to better understand the persistent
+homology of a general network. In addition to devising robust
+theoretical methods for producing persistence diagrams from networks,
+we are interested in using our methods to glean new insights into the
+structures of a wide range of network datasets.
+<br>
+</p>
+
+
+
+<IMG SRC="photos/figure-zz-stab.png" style="width: 220px; height: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three-long">
+<span style="font-weight: bold;">Zigzag Persistent Homology of Dynamic Networks</span>
+<br>
+When studying flocking/swarming behaviors in animals 
+one is interested in quantifying and comparing the dynamics 
+of the clustering induced by the coalescence and disbanding 
+of animals in different groups. Motivated by this, we study
+ the problem of obtaining persistent homology based summaries 
+of time-dependent metric data. Read more in 
+<a href="https://research.math.osu.edu/networks/formigrams/">https://research.math.osu.edu/networks/formigrams/</a>.
+<br>
+</p>
+
+
+<IMG SRC="photos/figure-memory-zz.png" style="width: 220px; height: 300px;" hspace="20" vspace="00"  ALIGN="left" />
+<p class="bottom-three-long">
+<span style="font-weight: bold;">Zigzag Persistent Homology for Neural Data</span>
+<br>
+We apply Zigzag Persistent Homology towards understanding 
+the amount of information contained in the spike trains 
+of hippocampal place cells.  Previous work has established 
+that simply knowing which groups of place cells fire together
+ in an animal's hippocampus is sufficient to extract the 
+global topology of the animal's physical environment. We 
+model a system where collections of place cells group and 
+ungroup according to short-term plasticity rules. We 
+obtain the surprising result that in experiments with 
+spurious firing, the accuracy of the extracted topological
+ information decreases with the persistence (beyond a 
+certain regime) of the cell groups. This suggests that 
+synaptic transience, or forgetting, is a mechanism by which 
+the brain counteracts the effects of spurious place cell 
+activity. 
+<a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0202561">PLoS ONE link</a>.
+<br>
+</p>
+
+<br>
+
+
+<IMG SRC="photos/figure-memory-zz-rot.png" style="width: 300px; height: 220px;" hspace="20" vspace="00"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Zigzag Persistent Homology for Neural Data</span>
+<br>
+We apply Zigzag Persistent Homology towards understanding 
+the amount of information contained in the spike trains 
+of hippocampal place cells.  Previous work has established 
+that simply knowing which groups of place cells fire together
+ in an animal's hippocampus is sufficient to extract the 
+global topology of the animal's physical environment. We 
+model a system where collections of place cells group and 
+ungroup according to short-term plasticity rules. We 
+obtain the surprising result that in experiments with 
+spurious firing, the accuracy of the extracted topological
+ information decreases with the persistence (beyond a 
+certain regime) of the cell groups. This suggests that 
+synaptic transience, or forgetting, is a mechanism by which 
+the brain counteracts the effects of spurious place cell 
+activity. 
+<a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0202561">PLoS ONE link</a>.
+<br>
+</p>
+
+
+</div>
+</div>
+</div>
+</body></html>

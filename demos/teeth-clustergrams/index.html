@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clustergram for distance matrix</title>
+</head>
+<style>
+    .box_square{
+        height: 80vh;
+        width: 80vh;
+        float:left;
+        position: relative;
+    }
+
+    .box_view{
+        width: 41vw;
+        height: 93vh;
+        float: left;
+        overflow: scroll;
+    }
+
+    .box_teeth{
+        width: 20vw;
+        height: 15vw;
+        float: left;
+        position: relative;
+    }
+
+    .box_teethperm1{
+        top: 15vw;
+        /*left: 47vw;*/
+        width: 20vw;
+        height: 15vw;
+        float: left;
+        /*position: absolute;*/
+    }
+
+    .box_teethperm2{
+        top: 15vw;
+        left: 20vw;
+        width: 20vw;
+        height: 15vw;
+        float: left;
+        /*position: absolute;*/
+    }
+
+    .box_label{
+        width: 4vw;
+        height:82vh;
+        float:left;
+        position: relative;
+        z-index: 1;
+    }
+
+    .box_scale{
+        width: 4vw;
+        height:30vw;
+        float:left;
+        position: relative;
+    }
+
+    .box_den{
+        top: 80vh;
+        width: 80vh;
+        height: 13vh;
+        float:left;
+        position: absolute;
+    }
+
+    /*.box_label:hover {*/
+      /*-ms-transform: scale(1.5); !* IE 9 *!*/
+      /*-webkit-transform: scale(1.5); !* Safari 3-8 *!*/
+      /*transform: scale(1.5);*/
+    /*}*/
+
+</style>
+<body>
+<h1>Clustergram for distance matrix</h1>
+<p>This page is developed by Ying Yin and Graham Reese for Ying's thesis work on <i>Shape Classification via Optimal transport and Persistent homology</i>.
+    The link to the thesis can be found <a href="">here</a>.
+</p>
+
+<p>The visualization tool below is for the distance matrix from the optimal transport approach with Euclidean distance, uniform measures and D = 0.32. </p>
+
+<p>Moving mouse over to a box in the heatmap on the left will show the corresponding shapes on the right. Clicking the box will allow the selected pair of shapes to stay on the page. </p>
+
+<form>
+    <label>Order
+        <select id="order1" name="order">
+        <option value="orig">Optimal</option>
+        <option value="diet">Diet</option>
+        <option value="family">Family</option>
+        <option value="genus">Genus</option>
+        </select>
+    </label>
+    <label>Clustering method
+        <select id="linkage1" name="linkage">
+        <option value="single">Single</option>
+        <option value="complete">Complete</option>
+        <option value="average">Average</option>
+        </select>
+    </label>
+</form>
+<div class="background" style="position: relative; width: 100vw; height: 100vh;">
+    <div class="box_square" id="heatmap" style="background-color: white;"></div>
+    <div class="box_label" id="label" style=" background-color: white;"></div>
+    <div class="box_scale" id="scale" style=" background-color: white;"></div>
+    <div class="box_view">
+        <div class="box_teeth" id="pic1" style=" background-color: white;"></div>
+        <div class="box_teeth" id="pic2" style=" background-color: white;"></div>
+        <div class="box_teethperm1" id="permpic1" style=" background-color: white;"></div>
+        <div class="box_teethperm2" id="permpic2" style=" background-color: white;"></div>
+    </div>
+    <div class="box_den" id="dendro"  style="background-color: white;"></div>
+    <div class="box_scale" id="button" style=" background-color: white;"></div>
+</div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+<script>
+    function precise(x) {
+        return Number.parseFloat(x).toPrecision(2);
+    }
+
+    $(document).ready(function () {
+    var order1 = "orig";
+    function update_order() {
+        var den_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/lnk_";
+        var heatmap_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/map_text_";
+        var label_path = "https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/label_";
+        // console.log(order1)
+
+        if (order1 == "orig"){
+            label_path += "diet.txt";
+            heatmap_path += $("#linkage1").val() + "_array.json";
+            den_path += $("#linkage1").val() + "_den.json";
+        }
+        else{
+            label_path += $("#order1").val() + ".txt";
+            heatmap_path += $("#order1").val() + "_array.json";
+            den_path += $("#linkage1").val() + "_" + $("#order1").val() + ".json";
+        }
+        console.log(den_path)
+        console.log(heatmap_path)
+        console.log(label_path)
+
+        var background = $('.background');
+
+        var den_width = background.find("#dendro").width(), // width of dendrogram, should be the same as the width of the heatmap
+            den_height = background.find("#dendro").height(), // height of dendrogram, should be the same as the height of the heatmap
+            den_leftx = 0, // x coordinate of left start point of dendrogram
+            den_leffy = 0; // y coordinate of left start point of dendrogram
+
+
+        var hm_width = background.find("#heatmap").width(),
+            hm_height = background.find("#heatmap").height(),
+            hm_grid_size = (hm_width / 116);
+        console.log(hm_width)
+        // console.log(hm_height)
+        // Maximum value in matrix is 0.25358
+        var myColor = d3.scaleSequential()
+            .interpolator(d3.interpolateInferno)
+            .domain([0,0.26]);
+
+
+        var mouseover = function (d) {
+            var x_val = 116 - Math.round(d3.select(this).attr("x") / hm_grid_size) ;
+            var y_val = Math.round(d3.select(this).attr("y") / hm_grid_size)+1;
+
+            var wd = background.find("#pic1").width();
+            var ht = background.find("#pic1").height();
+            var x_pic = d3.select("#pic1").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            x_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + y_val + ".png")
+                });
+            x_pic.append("svg:text")
+                .attr("x", 20)
+                .attr("y", 10)
+                .text("Row: " + y_val)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+            if (order1 === "orig"){
+                x_pic.append("svg:text")
+                        .attr("x", 100)
+                        .attr("y", 10)
+                        .text("Label: " + y_val)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "12px")
+                        .attr("fill", "black")
+            } else {
+                d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+                    $.getJSON(heatmap_path).done(function(d){
+                        diet_array = JSON.parse(d);
+                        var j = 0;
+                        for(var i = 0; i < 116; i++){
+                            if(diet_array[0][i] == x_val){
+                                j = i;
+                            }
+                        }
+                        x_pic.append("svg:text")
+                            .attr("x", 100)
+                            .attr("y", 10)
+                            .text("Label: " + data[j][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "12px")
+                            .attr("fill", "black")
+                    });
+                });
+            }
+
+            var y_pic = d3.select("#pic2").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            y_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + x_val + ".png")
+                });
+            y_pic.append("svg:text")
+                .attr("x", 20)
+                .attr("y", 10)
+                .text("Column: " + x_val)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+            if (order1 === "orig"){
+                y_pic.append("svg:text")
+                        .attr("x", 100)
+                        .attr("y", 10)
+                        .text("Label: " + x_val)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "12px")
+                        .attr("fill", "black")
+            } else {
+                d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+                    $.getJSON(heatmap_path).done(function(d){
+                        diet_array = JSON.parse(d);
+                        var j = 0;
+                        for(var i = 0; i < 116; i++){
+                            if(diet_array[0][i] == y_val){
+                                j = i;
+                            }
+                        }
+                        y_pic.append("svg:text")
+                            .attr("x", 100)
+                            .attr("y", 10)
+                            .text("Label: " + data[j][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "12px")
+                            .attr("fill", "black")
+                    });
+                });
+            }
+
+
+            var coloring = d3.select(this)
+                .style("stroke")
+            if(coloring == "none"){
+                d3.select(this)
+                    .style("stroke", "black")
+            }
+        };
+
+        var mouseleave = function (d) {
+            d3.select("#pic1").selectAll("svg").remove();
+            d3.select("#pic2").selectAll("svg").remove();
+
+            var coloring = d3.select(this)
+                .style("stroke")
+            if(coloring == "black"){
+                d3.select(this)
+                    .style("stroke", "none")
+            }
+        };
+
+        var click = function (d) {
+
+            var x_val = 116 - Math.round(d3.select(this).attr("x") / hm_grid_size) ;
+            var y_val = Math.round(d3.select(this).attr("y") / hm_grid_size) +1 ;
+
+            var wd = background.find("#permpic1").width();
+            var ht = background.find("#permpic1").height();
+            var x_pic = d3.select("#permpic1").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            x_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + y_val + ".png")
+                });
+            x_pic.append("svg:text")
+                .attr("x", 20)
+                .attr("y", 10)
+                .text("Row: " + y_val)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+            if (order1 === "orig"){
+                x_pic.append("svg:text")
+                        .attr("x", 100)
+                        .attr("y", 10)
+                        .text("Label: " + y_val)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "12px")
+                        .attr("fill", "black")
+            } else {
+                d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+                    $.getJSON(heatmap_path).done(function(d){
+                        diet_array = JSON.parse(d);
+                        var j = 0;
+                        for(var i = 0; i < 116; i++){
+                            if(diet_array[0][i] == y_val){
+                                j = i;
+                            }
+                        }
+                        x_pic.append("svg:text")
+                            .attr("x", 100)
+                            .attr("y", 10)
+                            .text("Label: " + data[j][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "12px")
+                            .attr("fill", "black")
+                    });
+                });
+            }
+
+
+            var y_pic = d3.select("#permpic2").append("svg")
+                .attr("width", wd)
+                .attr("height", ht);
+            y_pic.append("svg:image")
+                .attr("x", 0)
+                .attr("y", 0)
+                .attr("width", wd)
+                .attr("height", ht)
+                .attr("xlink:href", function (d) {
+                    return ("https://research.math.osu.edu/networks/demos/teeth-clustergrams/photos/" + x_val + ".png")
+                });
+            y_pic.append("svg:text")
+                .attr("x", 20)
+                .attr("y", 10)
+                .text("Column: " + x_val)
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "12px")
+                .attr("fill", "black")
+            if (order1 === "orig"){
+                y_pic.append("svg:text")
+                        .attr("x", 100)
+                        .attr("y", 10)
+                        .text("Label: " + x_val)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "12px")
+                        .attr("fill", "black")
+            } else {
+                d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+                    $.getJSON(heatmap_path).done(function(d){
+                        diet_array = JSON.parse(d);
+                        var j = 0;
+                        for(var i = 0; i < 116; i++){
+                            if(diet_array[0][i] == x_val){
+                                j = i;
+                            }
+                        }
+                        y_pic.append("svg:text")
+                            .attr("x", 100)
+                            .attr("y", 10)
+                            .text("Label: " + data[j][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "12px")
+                            .attr("fill", "black")
+                    });
+                });
+            }
+
+            d3.select(this)
+                .style("stroke", "white")
+        };
+
+        d3.select("#heatmap").selectAll("svg").selectAll("*").remove();
+        d3.select("#heatmap").selectAll("svg").remove();
+        var svg = d3.select("#heatmap").append("svg")
+            .attr("width", hm_width)
+            .attr("height", hm_height)
+
+        $.getJSON("https://research.math.osu.edu/networks/demos/teeth-clustergrams/cache/map_text.json").done(function(data){
+
+            //CHANGE THIS JSON to change the ordering
+            $.getJSON(heatmap_path).done(function(d){
+                var data_array = JSON.parse(data);
+                var diet_array = JSON.parse(d);
+                var i = 0;
+                var j = 0;
+                for(i = 0; i < 116; i++){
+                    for(j = 0; j < 116; j++) {
+                        var columnX = diet_array[0][i];
+                        var columnY = diet_array[0][j];
+                        var value = data_array[columnX][columnY];
+                        svg.append("rect")
+                            .attr("x", function (d) {
+                                return j * hm_grid_size;
+                            })
+                            .attr("y", function (d) {
+                                return hm_height - (i+1) * hm_grid_size;
+                            })
+                            .attr("class", "hour bordered")
+                            .attr("width", hm_grid_size)
+                            .attr("height", hm_grid_size)
+                            .attr("stroke", "none")
+                            .style("stroke-width", 1)
+                            .style("fill", function (d) {
+                                return myColor(value)
+                            })
+                            .on("mouseover", mouseover)
+                            .on("mouseleave", mouseleave)
+                            .on("click", click)
+                    }
+                }
+            });
+        });
+
+
+        //CLEAR BUTTON
+        d3.select("#button").selectAll("svg").remove();
+        var clearbutton = function (d) {
+            d3.select("#permpic1").selectAll("svg").remove();
+            d3.select("#permpic2").selectAll("svg").remove();
+
+            d3.select("#heatmap").selectAll("svg").selectAll("rect")
+                .style("stroke", "none")
+        };
+
+        var clear = d3.select("#button").append("svg")
+            .attr("width", wd)
+            .attr("height", ht);
+
+        clear.append("rect")
+            .attr("x", 5)
+            .attr("y", 15)
+            .attr("rx", 2)
+            .attr("ry", 2)
+            .attr("class", "hour bordered")
+            .attr("width", 50)
+            .attr("height", 20)
+            .attr("stroke", "black")
+            .style("stroke-width", 1)
+            .style("fill", "grey")
+            .on("click", clearbutton)
+
+        clear.append("text")
+            .attr("x", 15)
+            .attr("y", 30)
+            .text("Clear")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "12px")
+            .attr("fill", "black")
+            .on("click", clearbutton)
+
+
+        //LABELS
+        var label_enlarge = function(){
+            $(this).css({'font-size': '8px'})
+                .css({'font-weight': 'bold'})
+        };
+
+        var label_return = function(){
+            $(this).css({'font-size': '6px'})
+                .css({'font-weight': 'normal'})
+        };
+
+        var wd = background.find("#label").width();
+        var ht = background.find("#label").height();
+        d3.select("#label").selectAll("svg").remove();
+        var label = d3.select("#label").append("svg")
+            .attr("width", wd)
+            .attr("height", ht);
+
+        for(var i = 0; i < 116; i++){
+            label.append("line")
+                .attr("x1", 0)
+                .attr("y1", function(d) { return i * hm_grid_size + 2; })
+                .attr("x2", 2)
+                .attr("y2", function(d) { return i * hm_grid_size + 2; })
+                .style("stroke", "blue")
+        }
+        if (order1 === "orig"){
+            for(var i = 0; i < 116; i++){
+                label.append("text")
+                    .attr("x", 3)
+                    .attr("y", function(d) { return i * hm_grid_size + 5; })
+                    .text(i + 1)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "6px")
+                    .attr("fill", "black")
+                    .on("mouseover", label_enlarge)
+                    .on("mouseleave", label_return);
+            }
+        } else {
+            d3.text(label_path).then(function(text){
+                var data = d3.csvParseRows(text);
+                var diet_array
+
+                //CHANGE THIS JSON to change the ordering
+                $.getJSON(heatmap_path).done(function(d){
+                    diet_array = JSON.parse(d);
+
+                    for(var i = 0; i < 116; i++){
+                        var numVal = diet_array[0][i];
+                        label.append("text")
+                            .attr("x", 3)
+                            .attr("y", function(d) { return numVal * hm_grid_size + 5; })
+                            .text(data[i][0])
+                            .attr("font-family", "sans-serif")
+                            .attr("font-size", "5px")
+                            .attr("fill", "black")
+                            .on("mouseover", label_enlarge)
+                            .on("mouseleave", label_return);
+                    }
+                });
+            });
+        }
+
+        //LEGEND
+        var wd = background.find("#scale").width();
+        var ht = background.find("#scale").height();
+        d3.select("#scale").selectAll("svg").remove();
+        var legend = d3.select("#scale").append("svg")
+            .attr("width", wd)
+            .attr("height", ht);
+        legend.append("text")
+            .attr("x",0)
+            .attr("y",20)
+            .text("Distances")
+            .attr("font-size","small");
+
+
+        for(var i = 0; i < 11; i++){
+            legend.append("rect")
+                .attr("x", 0)
+                .attr("y", function(d){ return ((11-i) * 10) + 20})
+                .attr("class", "hour bordered")
+                .attr("width", wd/3)
+                .attr("height", 20)
+                .attr("stroke", "none")
+                .style("fill", function(d) { return myColor(i * 0.025)} )
+
+            legend.append("text")
+                .attr("x", wd/3+1)
+                .attr("y", function(d){ return ((11-i) * 11) + 28})
+                .text(function(d){return precise(i * 0.025)})
+                .attr("font-family", "sans-serif")
+                .attr("font-size", "8px")
+                .attr("fill", "black");
+        }
+
+        // plot dendrogram
+        $.getJSON(den_path)
+            .done(function (data) {
+                // console.log(data)
+
+                //    adding the canvas
+                d3.select("#dendro").selectAll("svg").remove();
+                var canvas = d3.select("#dendro")
+                    .append("svg")
+                    .attr("width", den_width)
+                    .attr("height", den_height)
+
+                var line = d3.line()
+                    .x(function (d) {
+                        return d.x * den_width + den_leftx;
+                    })
+                    .y(function (d) {
+                        return d.y * den_height + den_leffy;
+                    });
+
+                data.forEach(function (d, i) {
+                    canvas.append("path")
+                        .attr("d", line(d))
+                        .style("stroke", "blue")
+                        .style("fill", "none")
+                })
+            });
+
+        $("#order1").change(function () {
+            order1 = $("#order1").val()
+            console.log("changing order")
+            console.log(order1)
+            update_order()
+        })
+
+        $("#linkage1").change(function () {
+            linkage1 = $("#linkage1").val()
+            console.log("changing order")
+            console.log(linkage1)
+            update_order()
+        })
+    }
+    update_order()
+    });
+    // })
+
+
+
+
+</script>
+</body>
+</html>

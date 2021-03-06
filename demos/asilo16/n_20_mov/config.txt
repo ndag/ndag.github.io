@@ -1,0 +1,12 @@
+20
+0.060000
+20
+1000
+100
+50
+441
+/home/chowdhury.57/TreeData/gridAdj.txt
+/home/chowdhury.57/TreeData/gridX.txt
+/home/chowdhury.57/TreeData/grid/n_20/R_0.06/Ti_20/p_100/trajs
+/home/chowdhury.57/TreeData/grid/n_20/R_0.06/Ti_20/p_100/nets
+/home/chowdhury.57/TreeData/grid/n_20/R_0.06/Ti_20/p_100/unets

@@ -1,0 +1,165 @@
+<html>
+<head>
+<meta charset="UTF-8"> 
+<title>Dendrograms</title>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<script>
+	var dict = {"euc":{"v":[0.32],
+	"u":Array.from(new Array(9), (x,i) => i/10)},
+	"geo":{"v":[0.35],
+	"u":Array.from(new Array(13), (x,i) => i/10)}};
+
+	var dictK = {"v": [50,100,200]};
+
+	function del_indices(del_ele,dictionary){
+		for (var i = 0; i < del_ele.length; i++){
+			var del_ind = dictionary.indexOf(del_ele[i]);
+			dictionary.splice(del_ind,1);
+		}
+	};
+	del_indices([0,0.6,0.7],dict["euc"]["u"]);
+	del_indices([0],dict["geo"]["u"]);
+
+	function loopD(options){
+		$('#DD1').empty();
+		for (D=0; D < options.length; D++){
+			var optionD = new Option(options[D],options[D]);
+			$('#DD1').append($(optionD));
+		}
+	}
+
+	function loopK(optionsK){
+		$('#K1').empty();
+		for (var i = 0; i < optionsK.length; i++){
+			var option_K = new Option(optionsK[i],optionsK[i]);
+			$('#K1').append($(option_K));
+		}
+	}	
+$(document).ready(function(){
+	var metric1 = "euc";
+	var measure1 = "u";
+	var DD1 = "0.1";
+	var normed1 = 1;
+	var label1 = 7;
+	var K1 = 2000;
+	function update_pdf() {
+		//change filename according to metric1/measure1
+		var prefix = "";
+		if (measure1 == "v"){
+			prefix = "voronoi_";
+		}
+		if (normed1 == 1){
+			prefix += "normed_";
+		}
+		if (measure1 == "v" || normed1 == 1){
+			prefix = "maxout_" + prefix;
+		} else {
+			prefix = "maxoutb1n99_" + prefix;
+		}
+		DD1 = $("#DD1").val();
+		K1 = $("#K1").val();
+			
+		var filename = "teeth_" + label1.toString() + "_sl_" + prefix + metric1 + "K" + K1.toString() +"_epsParam0.005_niter44_DD" + DD1.toString() + ".pdf";
+		var pdflabel = "<embed id=\"pdffile\" src=\"" + filename +"\" width=\"100%\" height=\"100%\" />"
+		console.log(pdflabel);
+		$("#pdfcontainer").html(pdflabel);
+	}
+
+	function update_DD(){
+		if (normed1 == 1){
+			$('#DD1').empty();
+			$('#DD1').append(new Option(1,1));
+		} else {
+			loopD(dict[metric1][measure1]);
+		}
+	}
+
+	function update_K(){
+		if (measure1 == "u"){
+			$('#K1').empty();
+			$('#K1').append(new Option(2000,2000));
+		} else {
+			loopK(dictK["v"]);
+		}
+	}
+
+	$("#metrics1").change(function() {
+		metric1 = $("#metrics1").val()
+		update_DD()
+		update_pdf()
+	})
+	$("#measure1").change(function() {
+		measure1 = $("#measure1").val()
+		update_DD()
+		update_K()
+		update_pdf()
+	})
+	$("#K1").change(function() {
+		K1 = $("#K1").val()
+		update_DD()
+		update_pdf()
+	})
+	$("#label1").change(function() {
+		label1 = $("#label1").val()
+		update_pdf()
+	})
+	$("#DD1").change(function(){
+		DD1 = $("#DD1").val()
+		update_pdf()
+	})
+	$("#normed1").change(function(){
+		normed1 = $("#normed1").val()
+		// console.log("the boolean value is " + Boolean(normed1));
+		update_DD();
+		update_pdf();
+	})
+	update_DD();
+	update_K();
+	update_pdf();
+})
+
+</script>
+<form>
+<label>metrics
+<select id="metrics1" name="metrics">
+    <option value="euc">Euclidean</option>
+    <option value="geo">Geodesic</option>
+</select>
+</label>
+<label>measure
+<select id="measure1" name="measure">
+    <option value="u">Uniform</option>
+    <option value="v">Voronoi</option>
+</select>
+</label>
+<label>normlized
+<select id="normed1" name="normed">
+	<option value=1>Yes</option>
+	<option value=0>No</option>
+</select>
+</label>
+<label>K
+<select id="K1" name="K">
+</select>
+</label>
+<label>label
+<select id="label1" name="label">
+	<option value=7>diet</option>
+	<option value=8>order</option>
+	<option value=2>family</option>
+	<option value=5>genus</option>
+	<option value=1>specimen</option>
+</select>
+</label>
+<label>DD
+<select id="DD1" name="DD">
+</select>
+</label>
+</form>
+<div id="pdfcontainer">
+<embed id="pdffile" src="teeth_7_sl_maxoutb1n99_eucK2000_epsParam0.005_niter44_DD0.1.pdf" width="100%" height="100%" />
+</div>
+</body>
+</html>

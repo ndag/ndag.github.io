@@ -1,0 +1,833 @@
+var graph;
+var txtInput;
+var forwardButton;
+var rewindButton;
+var slider;
+var zoom;
+var currentMouseX;
+var currentMouseY;
+var fixedX;
+var fixedY;
+
+function preload(){
+  txtInput = loadStrings("edges.txt");
+}
+
+function setup() {
+  createCanvas(1600, 500);
+  background(240);
+  graph = new Graph(7,txtInput,0);
+  //drawButtons(20, 40, 650, 150,graph.sliderValue);
+  zoom = 1;
+  currentMouseX = 100;
+  currentMouseY = 0;
+  fixedX = 600;
+  fixedY = 250;
+
+}
+
+function draw() {
+
+
+  scale(1);
+  //translate(currentMouseX,currentMouseY);
+  background(240);
+  //graph.createGraph(20, 40, 650, 150);
+  graph.createFormigram(230,40+200,1000,150,graph.dynamicGraph,graph.sliderValue);
+
+  //graph.sliderValue = slider.value();
+
+
+
+}
+
+function keyPressed() {
+  clear();
+  if (keyCode === 38) {
+
+    zoom +=.2 ;
+
+
+  } else if (keyCode === 40) {
+
+    zoom -=.2 ;
+
+
+  }
+
+}
+
+function mousePressed(){
+  currentMouseX = ((600-mouseX));
+  currentMouseY = ((250-mouseY));
+}
+
+
+function assert(condition, message) {
+    if (!condition) {
+        throw message || "Assertion failed";
+    }
+}
+
+
+function Graph(numberOfPoints,input,smoothParameter){
+
+this.dynamicGraph = computeDynamicGraph(numberOfPoints,input,smoothParameter);
+//this.formigramData = computeDynamicFormigram(this.dynamicGraph);
+//this.sliderValue = this.formigramData.length-1;
+
+}
+
+function computeDynamicFormigram(input){
+  var formigramData = [];
+  for(var i = 0;i<input.clustersInTime.length;i++){
+    formigramData[i]= [];
+  }
+
+  for(var i = 0;i<input.clustersInTime.length;i++){
+    for(var j = 0;j<input.clustersInTime[i].clusteredComponents.length;j++){
+      for(var k = 0;k<input.clustersInTime[i].clusteredComponents[j].connectedPoints.length;k++){
+        var lowest = input.clustersInTime[i].clusteredComponents[j].lowestPoint;
+        formigramData[i][input.clustersInTime[i].clusteredComponents[j].connectedPoints[k]-1] = lowest;
+      }
+    }
+  }
+
+  return formigramData;
+
+}
+
+function computeDynamicGraph(numberOfPoints,input,smoothParameter){
+  var data = new clustersOverTime();
+  data.createTime(0);
+  var inputs = []
+  var graphInitial = parseInitial(numberOfPoints,input[0]);
+
+
+  data.add(0,graphInitial);
+  var lineNumber = 1;
+    while(input[lineNumber]!="EOF"){
+      inputs[lineNumber] = parseBody(input[lineNumber]);
+      lineNumber++;
+    }
+
+  for(var i = 1;i<inputs.length;i++){
+    var time = inputs[i][0];
+    var option =  inputs[i][1];
+    var point1 =  inputs[i][2];
+    var point2 =  inputs[i][3];
+    if(!data.alreadyCreated(time)){
+      var copiedCluster = data.clustersInTime[time-1].copyCluster();
+      if(data.clustersInTime[time]==null){
+        data.clustersInTime[time] = [];
+        data.add(time,copiedCluster);
+      }
+
+    }
+
+    if(option =='C'){
+  data.clustersInTime[time].connectPoint(point1,point2);
+}else if((option =='B')){
+  data.clustersInTime[time].breakPoint(point1,point2);
+}else if((option =='A')){
+  data.clustersInTime[time].addPoint(point1);
+}else if((option =='R')){
+  data.clustersInTime[time].removePoint(point1);
+}
+else{
+  assert(false);
+}
+}
+
+
+
+
+  var smoothedFormigramData = smoothFunction(data,smoothParameter);
+
+  var formigramData3 = [];
+
+  formigramData3 = convertFormigramFromConnectedComponents(smoothedFormigramData);
+
+
+
+  return formigramData3;
+}
+
+function connect(data){
+  var arr = [];
+  var maximum = 0;
+  for(var i = 0;i<data.length;i++){
+    if(maximum<data[i].length){
+      maximum  = data[i].length;
+    }
+  }
+  for(var i = 0;i<maximum;i++){
+    arr[i] = [];
+  }
+
+  for(var i = 0;i<maximum;i++){
+    for(var j = 0;j<maximum;j++){
+      var max = -2;
+      for(var k = 0;k<data.length;k++){
+        if(data[k][i]!=null&&data[k][i][j]!=null&&data[k][i][j]>max){
+          max = data[k][i][j];
+        }
+
+      }
+      arr[i][j] = max;
+
+    }
+  }
+  return arr
+}
+
+function convertFormigramFromConnectedComponents(data){
+  var formigramData = [];
+  for(var i = 0;i<data.length;i++){
+    formigramData[i] = [];
+  }
+
+  for(var i = 0;i<data.length;i++){
+    for(var j = 0;j<data[i].length;j++){
+      for(var k = 0;k<data[i][j].length;k++){
+        var u = data[i][j][k]-1;
+        formigramData[i][u] = data[i][j][0];
+      }
+    }
+  }
+
+  return formigramData;
+
+}
+
+
+function smoothFunction(formigramData,smoothParameter){
+  var smoothedFormigramData = [];
+  var current = 0;
+
+
+  for(var i = 0;i<formigramData.clustersInTime.length;i++){
+    var partialFormigramData = [];
+
+    var left = max(current-smoothParameter,0);
+    var right = min(current+smoothParameter,formigramData.clustersInTime.length-1);
+    var index = left;
+    for(var j = left;j<=right;j++){
+      var temp = partialFormigramData.length;
+      partialFormigramData[temp] = formigramData.clustersInTime[index].adjacencyMatrix;
+      index++;
+    }
+
+    smoothedFormigramData[current] = connect(partialFormigramData);
+    current++;
+  }
+
+  var smoothedConnectedFormigramData = [];
+  for(var i = 0;i<formigramData.clustersInTime.length;i++){
+    smoothedConnectedFormigramData[i] = connectedComponentsAlgorithm(smoothedFormigramData[i]);
+  }
+
+  return smoothedConnectedFormigramData;
+}
+
+
+function contains(arr,number){
+  var low = 0;
+  var high = arr.length-1;
+
+
+    while (low <= high) {
+        var mid = int((low + high) / 2);
+        if (arr[mid] < number) {
+            low = mid + 1;
+        } else if (arr[mid] > number) {
+            high = mid - 1;
+        } else if (arr[mid] == number) {
+            return true;
+            break;
+        }
+    }
+    return false;
+}
+
+function covertAdjacencyMatrix(adjacencyMatrix){
+
+  var formigramData = [];
+
+  for(var i = 0;i<adjacencyMatrix.length;i++){
+    for(var j = 0;j<adjacencyMatrix.length;j++){
+      if(adjacencyMatrix[i][j]==1){
+          if(formigramData[j]==null){
+            formigramData[j] = i;
+          }else{
+            if(formigramData[j]>adjacencyMatrix[i][j]){
+              formigramData[j] = adjacencyMatrix[i][j];
+            }
+          }
+      }
+    }
+  }
+
+  return formigramData;
+}
+
+
+function connectedComponentsAlgorithm(adj) {
+  var numVertices = adj.length
+  var visited = [];
+  for(var i=0; i<numVertices; ++i) {
+    if(adj[i][0]==-1){
+      visited[i] = true;
+    }else{
+      visited[i] = false;
+    }
+
+  }
+
+  var components = []
+  for(var i=0; i<numVertices; ++i) {
+    if(visited[i]) {
+      continue
+    }
+
+    var toVisit = [i]
+    var cc = [i+1]
+    visited[i] = true
+    while(toVisit.length > 0) {
+      var v = toVisit.pop()
+      var nbhd = adj[v]
+      for(var j=0; j<nbhd.length; ++j) {
+        var u = j+1;
+        if(!visited[j]&&nbhd[j]==1) {
+          visited[j] = true;
+          toVisit.push(j);
+          cc.push(u);
+        }
+      }
+    }
+
+    components.push(cc)
+
+  }
+
+  for(var i = 0;i<components.length;i++){
+    components[i].sort(function(a,b){
+      if(a<b){
+        return -1;
+      }else if(a>b){
+        return 1;
+      }else{
+        return 0;
+      }
+    });
+  }
+
+  return components
+
+}
+
+
+function clustersOverTime(){
+  this.clustersInTime = [];
+}
+
+clustersOverTime.prototype.add = function(time,clusters){
+  this.clustersInTime[time] = clusters;
+}
+
+function clusters(){
+  this.clusteredComponents = [];
+}
+
+clustersOverTime.prototype.createTime = function(time){
+  this.clustersInTime[time] = [];
+}
+
+clustersOverTime.prototype.alreadyCreated = function(time){
+  return this.clustersInTime[time] != null;
+
+}
+
+
+clusters.prototype.find = function(point){
+  var pos = -1;
+  for(var i = 0;i<this.clusteredComponents.length;i++){
+    if(this.clusteredComponents[i].find(point)>=0){
+      pos = i;
+      break;
+    }
+  }
+  return pos;
+}
+
+clusters.prototype.addCluster = function(cluster){
+  this.clusteredComponents.push(cluster);
+}
+
+
+
+
+
+clusters.prototype.addCluster = function(cluster){
+  this.clusteredComponents.push(cluster);
+
+}
+
+
+connectedComponents.prototype.connectPoint = function(point1,point2){
+  this.connectEdge(point1,point2);
+}
+
+//order matters
+connectedComponents.prototype.breakPoint = function(point1,point2){
+      this.breakEdge(point1,point2);
+
+}
+connectedComponents.prototype.addPoint = function(point1){
+      this.addPoint(point1,point2);
+
+}
+connectedComponents.prototype.removePoint = function(point1){
+      this.removePoint(point1,point2);
+
+}
+
+
+
+
+function connectedComponents(numberOfPoints){
+  //this.lowestPoint = -1;
+  this.adjacencyMatrix = [];
+  for(var i = 0;i<numberOfPoints;i++){
+    this.adjacencyMatrix[i] = [];
+    for(var j = 0;j<numberOfPoints;j++){
+      this.adjacencyMatrix[i][j] = 0;
+    }
+  }
+  //this.points = [];
+
+
+}
+
+
+connectedComponents.prototype.connectEdge = function(point1,point2){
+  point1 = point1-1;
+  point2 = point2-1;
+  /*var lower = point1;
+  if(point2<point1){
+    lower = point2;
+  }
+  if(this.lowestPoint!=-1&&this.lowestPoint>lower){
+    this.lowestPoint  = lower;
+  }
+  if(this.adjacencyMatrix[point1]==null){
+    this.adjacencyMatrix[point1] = [];
+    //this.points[point1] = 1;
+  }
+  if(this.adjacencyMatrix[point2]==null){
+    this.adjacencyMatrix[point2] = [];
+  //  this.points[point2] = 1;
+}*/
+  this.adjacencyMatrix[point1][point2] = 1;
+  this.adjacencyMatrix[point2][point1] = 1;
+}
+
+connectedComponents.prototype.breakEdge = function(point1,point2){
+  point1 = point1-1;
+  point2 = point2-1;
+
+  this.adjacencyMatrix[point1][point2] = 0;
+  this.adjacencyMatrix[point2][point1] = 0;
+}
+
+connectedComponents.prototype.addPoint = function(point1){
+  point1 = point1-1;
+
+  this.adjacencyMatrix[point1] = []
+  for(var i = 0;i<this.adjacencyMatrix.length;i++){
+    this.adjacencyMatrix[point1][i] = 0;
+    this.adjacencyMatrix[i][point1] = 0;
+  }
+}
+
+connectedComponents.prototype.removePoint = function(point1){
+
+
+  for(var i = 0;i<this.adjacencyMatrix.length;i++){
+    this.adjacencyMatrix[point1-1][i] = -1;
+    this.adjacencyMatrix[i][point1-1] = -1;
+  }
+}
+
+connectedComponents.prototype.add = function(point){
+
+  var pos = 0;
+  while(pos<this.connectedPoints.length&&this.connectedPoints[pos]<point){
+    pos++;
+  }
+  this.connectedPoints.splice(pos,0,point);
+  this.lowestPoint = this.connectedPoints[0];
+}
+
+connectedComponents.prototype.add = function(point){
+
+  var pos = 0;
+  while(pos<this.connectedPoints.length&&this.connectedPoints[pos]<point){
+    pos++;
+  }
+  this.connectedPoints.splice(pos,0,point);
+  this.lowestPoint = this.connectedPoints[0];
+}
+
+connectedComponents.prototype.remove = function(point){
+  var pos = this.find(point);
+  assert(pos>=0,"expected point to be in components");
+  this.connectedPoints.splice(pos,1);
+  this.lowestPoint = this.connectedPoints[0];
+
+  var removedPoint = new connectedComponents();
+  removedPoint.add(point);
+  return removedPoint;
+}
+
+connectedComponents.prototype.copyCluster = function(){
+  var copyClusters = new connectedComponents();
+
+  for(var i = 0;i<this.adjacencyMatrix.length;i++){
+    if(this.adjacencyMatrix[i]==null){
+      continue;
+    }else{
+      copyClusters.adjacencyMatrix[i] = [];
+    }
+    for(var j = 0;j<this.adjacencyMatrix[i].length;j++){
+      copyClusters.adjacencyMatrix[i][j] = this.adjacencyMatrix[i][j];
+    }
+  }
+
+  return copyClusters;
+}
+
+connectedComponents.prototype.find = function(point){
+  var pos = -1;
+  if(this.connectedPoints.length>0){
+    var left = 0;
+    var right = this.connectedPoints.length-1;
+    var middle;
+    var stop = 0;
+    while(1<right-left&&stop<100){
+      stop++;
+      middle = floor((right+left)/2);
+      if(this.connectedPoints[middle]<point){
+        left = middle;
+      }else if(this.connectedPoints[middle]>point){
+        right = middle;
+      }
+      else{
+        break;
+      }
+    }
+    if(this.connectedPoints[left]==point){
+      pos = left;
+    }else if(this.connectedPoints[right]==point){
+      pos = right;
+    }else if (this.connectedPoints[middle]==point){
+      pos = middle;
+    }
+  }
+    return pos;
+}
+
+
+function parseInitial(numberOfPoints,input){
+  //var clusteredPoints = new clusters();
+  var connectedPoints = new connectedComponents(numberOfPoints);
+  var pos = 0;
+  assert(input.charAt(pos)=='{',"Expected {");
+  pos++;
+  assert(input.charAt(pos)=='{'||input.charAt(pos)=='}',"Expected { or }");
+  while(input.charAt(pos)=='{'){
+    pos++;
+    assert(isDigit(input.charAt(pos))||input.charAt(pos)=='}');
+    //var connectedPoints = new connectedComponents();
+    var twoEdges = [];
+    var edgePos = 0;
+    while(isDigit(input.charAt(pos))){
+      var digitString = parseDigits(pos,input);
+      var digits = parseInt(digitString);
+      twoEdges[edgePos] = digits;
+      pos = pos+digitString.length;
+      assert(input.charAt(pos)==','||input.charAt(pos)=='}');
+      edgePos++;
+      pos++;
+   }
+
+    assert(input.charAt(pos)==','||input.charAt(pos)=='}');
+    if(twoEdges.length>0){
+      connectedPoints.connectEdge(twoEdges[0],twoEdges[1]);
+      //clusteredPoints.addCluster(connectedPoints);
+    }
+    if(input.charAt(pos)==','){
+      pos++;
+    }
+
+  }
+    assert(input.charAt(pos)=='}',"Expected }");
+    return connectedPoints;
+}
+
+function computeConnectedComponents(adjacencyMatrix){
+  adjacencyMatrix[i]
+
+}
+
+
+
+function parseBody(input){
+  var data = [];
+  var pos = 0;
+  assert(input.charAt(pos)=='t');
+  pos++;
+  assert(isDigit(input.charAt(pos)));
+    var timeString = getDigits(input,pos);
+    pos = pos+timeString.length;
+    var time = parseInt(timeString);
+  assert((input.charAt(pos)==' '));
+  pos++;
+
+  assert((input.charAt(pos)=='C'||input.charAt(pos)=='B'||input.charAt(pos)=='A'||input.charAt(pos)=='R'));
+  var addOrRemove = input.charAt(pos);
+  pos++;
+  assert((input.charAt(pos)==' '));
+
+  pos++;
+  assert((input.charAt(pos)=='{'));
+  pos++;
+  assert(isDigit(input.charAt(pos)));
+  var point1String = getDigits(input,pos);
+  pos = pos+point1String.length;
+  var point1 = parseInt(point1String);
+  assert((input.charAt(pos)==',')||(input.charAt(pos)=='}'));
+  if((input.charAt(pos)==',')){
+      pos++;
+  }
+  assert(isDigit(input.charAt(pos))||(input.charAt(pos)=='}'));
+  if(isDigit(input.charAt(pos))){
+    var point2String = getDigits(input,pos);
+    pos = pos+point2String.length;
+    var point2 = parseInt(point2String);
+    assert((input.charAt(pos)=='}'));
+    data[3] = point2;
+  }else{
+    data[3] = 0;
+  }
+
+
+data[0] = time;
+data[1] = addOrRemove;
+data[2] = point1;
+
+
+  return data;
+}
+
+
+
+
+
+function parseDigits(pos,string){
+  var digitLength = 0;
+  while(isDigit(string.charAt(pos+digitLength))){
+      digitLength++;
+    }
+    return string.substring(pos,pos+digitLength)
+}
+
+function getDigits(string,pos){
+  var digitLength = 0;
+  while(isDigit(string.charAt(pos+digitLength))){
+      digitLength++;
+  }
+  return string.substring(pos,pos+digitLength);
+}
+
+
+
+
+
+
+function isDigit(c){
+  var digit = false;
+  if (c >= '0' && c <= '9') {
+    digit = true;
+}
+  return digit;
+
+}
+
+
+
+Graph.prototype.createGraph = function(startX,startY,sizeX,sizeY){
+
+  this.background(startX,startY,sizeX,sizeY);
+  this.xAxis(startX,startY,sizeX,sizeY);
+  this.yAxis(startX,startY,sizeX,sizeY);
+  this.plotGraph(startX,startY,sizeX,sizeY);
+}
+
+Graph.prototype.createFormigram = function(startX,startY,sizeX,sizeY,formigramData,sliderValue){
+
+
+  this.background(startX,startY,sizeX,sizeY);
+  this.plotFormigram(startX,startY,sizeX,sizeY,formigramData,sliderValue);
+  this.xAxis(startX,startY,sizeX,sizeY);
+  //this.plotLabels(startX,startY,sizeX,sizeY,formigramData);
+
+
+}
+
+function drawButtons(startX,startY,sizeX,sizeY,sliderValue){
+  forwardButton = createButton("FORWARD");
+  rewindButton = createButton("REWIND");
+  slider = createSlider(1,1000,sliderValue);
+  slider.position(310,470);
+  forwardButton.position(380,450);
+  rewindButton.position(300,450);
+}
+
+
+Graph.prototype.background = function(startX,startY,sizeX,sizeY){
+
+  noStroke();
+  fill(255);
+  rect(startX, startY, sizeX, sizeY)
+}
+
+Graph.prototype.yAxis = function(startX,startY,sizeX,sizeY){
+
+  for(let i = 0;i<this.numberOfPoints;i++){
+    let nextTick = map(i,0,this.numberOfPoints-1,startY,startY+sizeY);
+    stroke(0,0,0);
+    line(startX,nextTick,startX+10,nextTick);
+    fill(0);
+    strokeWeight(0);
+    var k = floor(100*(this.minElement + (i+1)*(this.maxElement-this.minElement)/this.numberOfPoints))/100;
+    text(k,startX-20,nextTick);
+    strokeWeight(1);
+  }
+  strokeWeight(1);
+  stroke(0,0,0);
+  line(startX,startY,startX,startY+sizeY);
+}
+
+Graph.prototype.xAxis = function(startX,startY,sizeX,sizeY){
+
+
+  for(let i = 0;i<this.dynamicGraph.length;i++){
+    let nextTick = map(i,0,this.dynamicGraph.length-1,startX,startX+sizeX);
+    stroke(0,0,0,63);
+    line(nextTick,startY+sizeY-10,nextTick,startY+sizeY);
+    line(nextTick,startY+sizeY-30,nextTick,startY+sizeY-20);
+    line(nextTick,startY+sizeY-50,nextTick,startY+sizeY-40);
+    line(nextTick,startY+sizeY-70,nextTick,startY+sizeY-60);
+    line(nextTick,startY+sizeY-90,nextTick,startY+sizeY-80);
+    line(nextTick,startY+sizeY-110,nextTick,startY+sizeY-100);
+    line(nextTick,startY+sizeY-130,nextTick,startY+sizeY-120);
+    line(nextTick,startY+sizeY-150,nextTick,startY+sizeY-140);
+
+
+
+  }
+
+  if(this.dynamicGraph.length<21){
+    for(let i = 0;i<this.dynamicGraph.length;i++){
+      let nextTick = map(i,0,this.dynamicGraph.length-1,startX,startX+sizeX);
+      fill(0);
+      strokeWeight(0);
+      text((i),nextTick-5,startY+sizeY+10);
+      strokeWeight(1);
+    }
+
+  }
+
+  strokeWeight(1);
+  stroke(0,0,0);
+  line(startX,startY+sizeY,startX+sizeX,startY+sizeY);
+
+}
+
+Graph.prototype.plotGraph = function(startX,startY,sizeX,sizeY){
+  for(let i = 0;i<this.pointsInTime.length;i++){
+    let color = map(i+1,0,this.pointsInTime.length,0,255);
+    stroke(color,(color+90)%255,(color+150)%255);
+    for(let j = 1;j<this.pointsInTime[i].length;j++){
+      let x1 = map(j,1,this.pointsInTime[i].length,startX,startX+sizeX);
+      let x2 = map(j+1,0,this.pointsInTime[i].length-1,startX,startX+sizeX);
+      let y1 = map(this.pointsInTime[i][j-1],this.minElement,this.maxElement,startY,startY+sizeY);
+      let y2 = map(this.pointsInTime[i][j],this.minElement,this.maxElement,startY,startY+sizeY);
+      line(x1,y1,x2,y2);
+    }
+  }
+
+}
+Graph.prototype.plotLabels = function(startX,startY,sizeX,sizeY,formigramData){
+
+
+  for(let i = 0;i<formigramData.length;i++){
+    let nextTick = map(i,0,this.dynamicGraph.length-1,startX,startX+sizeX);
+    var arr = [];
+    var arr2 = []
+    for(let j = 0;j<formigramData[i].length;j++){
+        arr[j] = 0;
+    }
+    for(let j = 0;j<formigramData[i].length;j++){
+      var index  = formigramData[i][j]-1;
+        if(arr[index]==0){
+          arr2[arr2.length] = [];
+          arr[i] = 1;
+        }else{
+
+        }
+          arr2[index][arr2[index].length] = j+1;
+
+    }
+
+    for(let j = 0;j<arr2.length;j++){
+      var str = '';
+      for(let k = 0;k<arr2[j].length;j++){
+        str += arr2[j][k];
+        if(k<arr2[j].length-1){
+          str += ',';
+        }
+
+      }
+        text(str,nextTick-5,startY+sizeY+10);
+
+    }
+  }
+}
+
+Graph.prototype.plotFormigram = function(startX,startY,sizeX,sizeY,formigramData,intervalToDraw){
+  for(let i = 0;i<formigramData[i].length;i++){
+
+
+    for(let j = 1;j<formigramData.length;j++){
+
+      if(formigramData[j-1][i]==null||formigramData[j][i]==null){
+        continue;
+      }
+        let color = map(i+1,0,formigramData[0].length,0,255);
+        stroke((color+30)%255,(color+90)%255,(color+150)%255);
+        let x1 = map(j,1,formigramData.length,startX,startX+sizeX);
+        let x2 = map(j+1,1,formigramData.length,startX,startX+sizeX);
+        let y1 = map(formigramData[j-1][i]+1,0,formigramData[0].length+3,startY,startY+sizeY)
+        let y2 = map(formigramData[j][i]+1,0,formigramData[0].length+3,startY,startY+sizeY)
+        line(x1,y1,x2,y2);
+
+
+    }
+
+    if(formigramData[i+1]==null){
+      break;
+    }
+  }
+}
