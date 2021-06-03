@@ -68,31 +68,29 @@ network data. Some aspects of these methods are listed below.<br /><br />
   Our research is supported by the following grants: <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1723003">NSF-DMS-1723003</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1901360">NSF-IIS-1901360</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547357">NSF-DMS-1547357</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740761">NSF-CCF-1740761</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839358">NSF-CCF-1839358</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839356">NSF-CCF-1839356</a>.
 <br><br>
 
-  
+
+<IMG SRC="photos/figure-dghspheres.png" style="width: 200px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">The Gromov-Hausdorff distance between spheres</span>
+<br>
+We provide general upper and lower bounds for the Gromov-Hausdorff distance between m-sphere and n-sphere (endowed with the round metric) for m and n between zero and infinity. Some of these lower bounds are based on certain topological ideas related to the Borsuk-Ulam theorem. Via explicit constructions of (optimal) correspondences we prove that our lower bounds are tight in some cases. We also formulate a number of open  questions. Read more in [<a href="https://arxiv.org/abs/2105.00611">Lim, Mémoli and Smith, 2021</a>]
+<br>
+</p>
 
 <IMG SRC="photos/figure-D41-S1.png" style="width: 200px;" hspace="20" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
 <span style="font-weight: bold;">Curvature sets over persistence diagrams</span>
 <br>
-Inspired by Gromov's idea of the curvature sets, we define the (n,k)-Persistence Set of a compact metric space M as the collection of k-dimensional persistence diagrams of all samples X with n points. When M is finite, Persistence Sets provide a computationally cheaper alternative to the Vietoris-Rips complex of M, as the boundary matrices are significantly smaller whenever n<<|M|. In the special case that n=2k+2, it can be shown that the Vietoris-Rips persistent homology of X only has one interval in dimension k. This allows us to visuallize the (2k+2,k)-Persistence Set by overlaying the diagrams of all samples X into one set of axes. The image on the side shows the (4,1)-Persistence Set of the unit circle equipped with the shortest path distance. The configurations shown point to their respective persistence diagram inside of the Persistence Set. These invariants can detect the homotopy type of a certain family of metric graphs. [<a href="https://arxiv.org/abs/2103.04470"> arXiv link</a>]
-<br>
-</p>
- 
-<IMG SRC="photos/figure-dghspheres.png" style="width: 200px;" hspace="20" vspace="0"  ALIGN="left" />
-<p class="bottom-three">
-<span style="font-weight: bold;">The Gromov-Hausdorff distance between spheres</span>
-<br>
-We provide general upper and lower bounds for the Gromov-Hausdorff distance between m-sphere and n-sphere (endowed with the round metric) for m and n between zero and infinity. Some of these lower bounds are based on certain topological ideas related to the Borsuk-Ulam theorem. Via explicit constructions of (optimal) correspondences we prove that our lower bounds are tight in some cases. We also formulate a number of open  questions. Read more in [<a href="https://https://arxiv.org/abs/2105.00611">arXiv link</a>]
+Inspired by Gromov's idea of the curvature sets, we define the (n,k)-Persistence Set of a compact metric space M as the collection of k-dimensional persistence diagrams of all samples X with n points. When M is finite, Persistence Sets provide a computationally cheaper alternative to the Vietoris-Rips complex of M, as the boundary matrices are significantly smaller whenever n<<|M|. In the special case that n=2k+2, it can be shown that the Vietoris-Rips persistent homology of X only has one interval in dimension k. This allows us to visuallize the (2k+2,k)-Persistence Set by overlaying the diagrams of all samples X into one set of axes. The image on the side shows the (4,1)-Persistence Set of the unit circle equipped with the shortest path distance. The configurations shown point to their respective persistence diagram inside of the Persistence Set. These invariants can detect the homotopy type of a certain family of metric graphs. [<a href="https://arxiv.org/abs/2103.04470">Gómez and Mémoli, 2021</a>]
 <br>
 </p>
 
-  
-
-<IMG SRC="photos/figure-Interleaving_by_parts.png" style="width: 200px;" hspace="18" vspace="0"  ALIGN="left" />
+   
+<IMG SRC="photos/figure-res.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
-<span style="font-weight: bold;">Interleaving by Parts for Persistence In a Poset</span>
+<span style="font-weight: bold;">Persistent Laplacians</span>
 <br>
-Metrics in computational topology are often either (i) themselves in the form of the interleaving distance d(F,G) between certain order-preserving maps F and G between posets or (ii) admit d(F,G) as a tractable lower bound. Assuming that the target poset of F and G admits a join-dense subset, we propose certain join decompositions of F and G which facilitate the computation of d(F,G). We leverage this result in order to (i) elucidate the structure and computational complexity of the interleaving distance for poset-indexed clusterings (i.e. poset-indexed subpartition-valued functors), (ii) to clarify the relationship between the erosion distance by Patel and the graded rank function by Betthauser, Bubenik, and Edwards, and (iii) to reformulate and generalize the tripod distance by the second author.[<a href="https://arxiv.org/abs/1912.04366">arXiv link</a>]
+In this work we present a thorough study of the theoretical properties and devise efficient algorithms for the persistent Laplacian, an extension of the standard combinatorial Laplacian to the setting of simplicial pairs: pairs of simplicial complexes related by an inclusion, which was recently introduced by Wang et al. in [<a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/cnm.3376?casa_token=xlaNzrHhYB0AAAAA:DKMEZk-jFC_GoSBkGlccqyt_jN4NnCyRwbGRRaiiNtlSthkRF6xz_ojiwrypkPpgScJLeRf0qgaRGuBR">1</a>]. In analogy with the non-persistent case, we establish that the nullity of the q-th persistent Laplacian equals the q-th persistent Betti number of any given simplicial pair which provides an interesting connection between spectral graph theory and TDA. We further exhibit a novel relationship between the persistent Laplacian and the notion of Schur complement of a matrix. This relation permits us to uncover a link with the notion of effective resistance from network circuit theory and leads to a persistent version of the Cheeger inequality. This relationship also leads to a novel and fundamentally different algorithm for computing the persistent Betti number for a pair of simplicial complexes which can be significantly more efficient than standard algorithms. See [<a href="https://arxiv.org/abs/2012.02808"> Mémoli, Wan and Wang, 2020</a>] for our work.
 <br>
 </p>
   
@@ -101,27 +99,26 @@ Metrics in computational topology are often either (i) themselves in the form of
 <p class="bottom-three">
 <span style="font-weight: bold;">Vietoris-Rips Persistent Homology, Injective Metric Spaces, and The Filling Radius</span>
 <br>
-In the applied algebraic topology community, the persistent homology induced by the Vietoris-Rips simplicial filtration is a standard method for capturing topological information from metric spaces. In this paper, we consider a different, more geometric way of generating persistent homology of metric spaces which arises by first embedding a given metric space into a larger space and then considering thickenings of the original space inside this ambient metric space. In the course of doing this, we  construct an appropriate category for studying this notion of persistent homology and  show that, in a category theoretic sense, the standard persistent homology of the Vietoris-Rips filtration is isomorphic to our geometric persistent homology provided that the ambient metric space satisfies a property called injectivity.  Read more in [<a href="https://https://arxiv.org/abs/2001.07588">arXiv link</a>]
+In the applied algebraic topology community, the persistent homology induced by the Vietoris-Rips simplicial filtration is a standard method for capturing topological information from metric spaces. In this paper, we consider a different, more geometric way of generating persistent homology of metric spaces which arises by first embedding a given metric space into a larger space and then considering thickenings of the original space inside this ambient metric space. In the course of doing this, we  construct an appropriate category for studying this notion of persistent homology and  show that, in a category theoretic sense, the standard persistent homology of the Vietoris-Rips filtration is isomorphic to our geometric persistent homology provided that the ambient metric space satisfies a property called injectivity.  Read more in [<a href="https://arxiv.org/abs/2001.07588">Lim, Mémoli and Okutan, 2020</a>]
 <br>
 </p>
   
-<IMG SRC="photos/figure-res.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<IMG SRC="photos/figure-Interleaving_by_parts.png" style="width: 200px;" hspace="18" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
-<span style="font-weight: bold;">Persistent Laplacians</span>
+<span style="font-weight: bold;">Interleaving by Parts for Persistence In a Poset</span>
 <br>
-In this work we present a thorough study of the theoretical properties and devise efficient algorithms for the persistent Laplacian, an extension of the standard combinatorial Laplacian to the setting of simplicial pairs: pairs of simplicial complexes related by an inclusion, which was recently introduced by Wang et al. in [<a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/cnm.3376?casa_token=xlaNzrHhYB0AAAAA:DKMEZk-jFC_GoSBkGlccqyt_jN4NnCyRwbGRRaiiNtlSthkRF6xz_ojiwrypkPpgScJLeRf0qgaRGuBR">1</a>]. In analogy with the non-persistent case, we establish that the nullity of the q-th persistent Laplacian equals the q-th persistent Betti number of any given simplicial pair which provides an interesting connection between spectral graph theory and TDA. We further exhibit a novel relationship between the persistent Laplacian and the notion of Schur complement of a matrix. This relation permits us to uncover a link with the notion of effective resistance from network circuit theory and leads to a persistent version of the Cheeger inequality. This relationship also leads to a novel and fundamentally different algorithm for computing the persistent Betti number for a pair of simplicial complexes which can be significantly more efficient than standard algorithms. See [<a href="https://arxiv.org/abs/2012.02808"> Mémoli, Wan and Wang, 2020</a>] for our work.
+Metrics in computational topology are often either (i) themselves in the form of the interleaving distance d(F,G) between certain order-preserving maps F and G between posets or (ii) admit d(F,G) as a tractable lower bound. Assuming that the target poset of F and G admits a join-dense subset, we propose certain join decompositions of F and G which facilitate the computation of d(F,G). We leverage this result in order to (i) elucidate the structure and computational complexity of the interleaving distance for poset-indexed clusterings (i.e. poset-indexed subpartition-valued functors), (ii) to clarify the relationship between the erosion distance by Patel and the graded rank function by Betthauser, Bubenik, and Edwards, and (iii) to reformulate and generalize the tripod distance by the second author.[<a href="https://arxiv.org/abs/1912.04366">Kim, Mémoli and Stefanou, 2019</a>]
 <br>
 </p>
-
   
+ 
 <IMG SRC="photos/figure-ppi1.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
 <span style="font-weight: bold;">Persistent Homotopy Groups of Metric Spaces</span>
 <br>
-With the aim of enlarging the toolset of persistence theory, which has traditionally dealt with homology groups and their persistent versions, we study notions of persistent homotopy groups of compact metric spaces together with their stability properties in the Gromov-Hausdorff sense. We pay particular attention to the case of persistent fundamental groups for which we obtain a more precise description. Under fairly mild assumptions on the spaces, the classical fundamental group, isomorphic to the limit of the persistent fundamental group, has an underlying tree-like structure (i.e. a dendrogram) and an associated ultrametric. [<a href="https://arxiv.org/abs/1912.12399">arXiv link</a>]
+With the aim of enlarging the toolset of persistence theory, which has traditionally dealt with homology groups and their persistent versions, we study notions of persistent homotopy groups of compact metric spaces together with their stability properties in the Gromov-Hausdorff sense. We pay particular attention to the case of persistent fundamental groups for which we obtain a more precise description. Under fairly mild assumptions on the spaces, the classical fundamental group, isomorphic to the limit of the persistent fundamental group, has an underlying tree-like structure (i.e. a dendrogram) and an associated ultrametric. See [<a href="https://arxiv.org/abs/1912.12399">Mémoli and Zhou, 2019</a>].
 <br>
 </p>
-
 
 
 <IMG SRC="photos/figure-ElderRule.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
@@ -272,7 +269,7 @@ A standard result in metric geometry is that every compact geodesic metric space
 In our work, given a compact geodesic metric \(X\), we define a sequence \((\delta^X_n)_{n \geq 0}\) of non-negative real numbers by $$\delta^X_n:=\inf \{d_{GH}(X,G): G \text{ a finite metric graph, } \beta_1(G)\leq n \} .$$
  By construction, and the above result, this is a non-increasing sequence with limit \(0\). We study this sequence and its rates of decay with \(n\). We also identify a precise relationship between the sequence and the first Vietoris-Rips persistence barcode of \(X\). Furthermore, we specifically analyze \(\delta_0^X\)  and find upper and lower bounds based on hyperbolicity and other metric invariants. As a consequence of the tools we develop, our work also provides a Gromov-Hausdorff stability result for the Reeb construction on geodesic metric spaces with respect to the function  given by distance to a reference point.
 
-<a href="https://arxiv.org/abs/1809.05566">Arxiv link</a>.
+<a href="https://arxiv.org/abs/1809.05566">[Mémoli and Okutan, 2018]</a>.
 <br>
 </p>
 
