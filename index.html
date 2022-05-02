@@ -68,13 +68,95 @@ network data. Some aspects of these methods are listed below.<br /><br />
   
 Our research is supported by the following grants: <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1723003">NSF-DMS-1723003</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1901360">NSF-IIS-1901360</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547357">NSF-DMS-1547357</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740761">NSF-CCF-1740761</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839358">NSF-CCF-1839358</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839356">NSF-CCF-1839356</a>.
 <br><br>
+  
+
+<IMG SRC="figures/weisfeiler-lehman.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Weisfeiler-Lehman meets Gromov-Wasserstein</span>
+<br>
+The Weisfeiler-Lehman (WL) test is a classical procedure for graph isomorphism
+testing. The WL test has also been widely used both for designing graph kernels
+and for analyzing graph neural networks. In this paper, we propose the WeisfeilerLehman (WL) distance, a notion of distance between labeled measure Markov chains
+(LMMCs), of which labeled graphs are special cases. The WL distance is polynomial
+time computable and is also compatible with the WL test in the sense that the former
+is positive if and only if the WL test can distinguish the two involved graphs. The WL
+distance captures and compares subtle structures of the underlying LMMCs and, as a
+consequence of this, it is more discriminating than the distance between graphs used for
+defining the state-of-the-art Wasserstein Weisfeiler-Lehman graph kernel. Inspired by
+the structure of the WL distance we identify a neural network architecture on LMMCs
+which turns out to be universal w.r.t. continuous functions defined on the space of
+all LMMCs (which includes all graphs) endowed with the WL distance. Finally, the
+WL distance turns out to be stable w.r.t. a natural variant of the Gromov-Wasserstein
+(GW) distance for comparing metric Markov chains that we identify. Hence, the WL
+distance can also be construed as a polynomial time lower bound for the GW distance
+which is in general NP-hard to compute. See [<a href="https://arxiv.org/pdf/2202.02495">Chen, Lim, Mémoli, Wan and Wang, 2022</a>] for our work.
+<br>
+</p>
+  
+   <IMG SRC="figures/mds-mms.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Classical MDS on Metric Measure Spaces</span>
+<br>
+We generalize the classical Multidimensional Scaling procedure to the setting of general metric measure spaces. We develop a related spectral theory for the generalized cMDS operator, which provides a more natural and rigorous mathematical background for cMDS. Also, we show that the sum of all negative eigenvalues of the cMDS operator is a new invariant measuring non-flatness of a metric measure space. Furthermore, the cMDS output of several non-finite exemplar metric measures spaces, in particular the cMDS for spheres S^{d-1} and subsets of Euclidean space, are studied. Finally, we prove the stability of the generalized cMDS process with respect to the Gromov-Wasserstein distance. See [<a href="https://arxiv.org/abs/2201.09385"> Lim and Mémoli, 2022</a>] for our work.
+<br>
+</p>
+  
+ <IMG SRC="figures/diagram-poset.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Diagrams of Persistence Modules Over Finite Posets</span>
+<br>
+Starting with a persistence module - a functor M from a finite poset to the category of finite dimensional vector spaces - we seek to assign to M an invariant capturing meaningful information about the persistence module. This is often accomplished via applying a Mobius inversion to the rank function or birth-death function. In this paper we establish the relationship between the rank function and birth-death function by introducing a new invariant: the kernel function. The peristence diagram produced by the kernel function is equal to the diagram produced by the birth-death function off the diagonal and we prove a formula for converting between the persistence diagrams of the rank function and kernel function. See [<a href="https://arxiv.org/abs/2201.06650">Gulen and McCleary, 2022</a>] for our work.
+<br>
+</p>
+
+  <IMG SRC="figures/tight-span.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Some results about the Tight Span of spheres</span>
+<br>
+The smallest hyperconvex metric space containing a given metric space X is called the tight span of X. It is known that tight spans have many nice geometric and topological properties, and they are gradually becoming a target of research of both the metric geometry community and the topological/geometric data analysis community. In this paper, we study the tight span of n-spheres (with either geodesic metric or l infinity-metric). See [<a href="https://arxiv.org/abs/2112.12646">Lim, Mémoli, Wan, Wang and Zhou, 2021</a>] for our work.
+<br>
+</p>  
+  
+    <IMG SRC="figures/2d-rank.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Computing Generalized Rank Invariant for 2-Parameter Persistence Modules via Zigzag Persistence and its Applications</span>
+<br>
+The notion of generalized rank invariant in the context of multiparameter persistence has become an important ingredient for defining interesting homological structures such as generalized persistence diagrams. Naturally, computing these rank invariants efficiently is a prelude to computing any of these derived structures efficiently. We show that the generalized rank over a finite interval I of a Z2-indexed persistence module M is equal to the generalized rank of the zigzag module that is induced on a certain path in I tracing mostly its boundary. Hence, we can compute the generalized rank over I by computing the barcode of the zigzag module obtained by restricting the bifiltration inducing M to that path. If the bifiltration and I have at most t simplices and points respectively, this computation takes O(tω) time where ω∈[2,2.373) is the exponent of matrix multiplication. Among others, we apply this result to obtain an improved algorithm for the following problem. Given a bifiltration inducing a module M, determine whether M is interval decomposable and, if so, compute all intervals supporting its summands. See [<a href="https://arxiv.org/abs/2111.15058">Dey, Kim and Mémoli, 2021</a>] for our work.
+<br>
+</p>
+  
+  <IMG SRC="figures/ptolemy.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">An interpretation of the 4-point condition of metric trees via Ptolemy's inequality</span>
+<br>
+We identify a family of Ptolemaic inequalities in CAT(κ) spaces parametrized by κ and identify that the limit as κ→−∞ gives the 4-point condition of tree metric spaces. See [<a href="https://arxiv.org/abs/2111.10328">Gómez and Mémoli, 2021</a>] for our work.
+<br>
+</p> 
+  
+  <IMG SRC="figures/dgh-ultrametric.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">The Gromov-Hausdorff distance between ultrametric spaces: its structure and computation</span>
+<br>
+The Gromov-Hausdorff distance (dGH) provides a natural way of quantifying the dissimilarity between two given metric spaces. It is known that computing dGH between two finite metric spaces is NP-hard, even in the case of finite ultrametric spaces which are highly structured metric spaces in the sense that they satisfy the so-called \emph{strong triangle inequality}. Ultrametric spaces naturally arise in many applications such as hierarchical clustering, phylogenetics, genomics, and even linguistics. By exploiting the special structures of ultrametric spaces, (1) we identify a one parameter family {d(p)GH}p∈[1,∞] of distances defined in a flavor similar to the Gromov-Hausdorff distance on the collection of finite ultrametric spaces, and in particular d(1)GH=dGH. The extreme case when p=∞, which we also denote by uGH, turns out to be an ultrametric on the collection of ultrametric spaces. Whereas for all p∈[1,∞), d(p)GH yields NP-hard problems, we prove that surprisingly uGH can be computed in polynomial time. The proof is based on a structural theorem for uGH established in this paper; (2) inspired by the structural theorem for uGH, and by carefully leveraging properties of ultrametric spaces, we also establish a structural theorem for dGH when restricted to ultrametric spaces. This structural theorem allows us to identify special families of ultrametric spaces on which dGH is computationally tractable. These families are determined by properties related to the doubling constant of metric space. Based on these families, we devise a fixed-parameter tractable (FPT) algorithm for computing the exact value of dGH between ultrametric spaces. We believe ours is the first such algorithm to be identified. See [<a href="https://arxiv.org/abs/2110.03136"> Mémoli, Smith and Wan, 2021</a>] for our work.
+<br>
+</p>   
+  
+  
+  <IMG SRC="figures/metric-thickening.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">The Persistent Topology of Optimal Transport Based Metric Thickenings</span>
+<br>
+A metric thickening of a given metric space X is any metric space admitting an isometric embedding of X. Thickenings have found use in applications of topology to data analysis, where one may approximate the shape of a dataset via the persistent homology of an increasing sequence of spaces. We introduce two new families of metric thickenings, the p-Vietoris-Rips and p-Čech metric thickenings for all 1≤p≤∞, which include all measures on X whose p-diameter or p-radius is bounded from above, equipped with an optimal transport metric. The p-diameter (resp. p-radius) of a measure is a certain ℓp relaxation of the usual notion of diameter (resp. radius) of a subset of a metric space. These families recover the previously studied Vietoris-Rips and Čech metric thickenings when p=∞. As our main contribution, we prove a stability theorem for the persistent homology of p-Vietoris-Rips and p-Čech metric thickenings, which is novel even in the case p=∞. In the specific case p=2, we prove a Hausmann-type theorem for thickenings of manifolds, and we derive the complete list of homotopy types of the 2-Vietoris-Rips thickenings of the n-sphere as the scale increases. See [<a href="https://arxiv.org/abs/2109.15061"> Adams, Mémoli, Moy and Wang, 2021</a>] for our work.
+<br>
+</p>     
+  
 
 <IMG SRC="figures/figure-cup-length.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
 <span style="font-weight: bold;">Persistent Cup-Length</span>
 <br>
 We lift the cup-length into the Persistent Cup-Length invariant for the purpose of extracting non-trivial information about the evolution of the cohomology ring structure across a filtration. We show that the Persistent Cup-Length can be computed from a family of representative cocycles and devise a polynomial time algorithm for the computation of the Persistent Cup-Length invariant. We furthermore show that this invariant is stable under suitable interleaving-type distances. 
-Along the way, we identify an invariant which we call the Cup-Length Diagram, which is stronger than  persistent cup-length but can still be computed efficiently. Read more in [<a href="https://arxiv.org/abs/2107.01553">Contessoto, Mémoli, Stefanou and Zhou, 2021</a>]
+Along the way, we identify an invariant which we call the Cup-Length Diagram, which is stronger than  persistent cup-length but can still be computed efficiently. Read more in [<a href="https://arxiv.org/abs/2107.01553">Contessoto, Mémoli, Stefanou and Zhou, 2021</a>].
 <br>
 </p>
 
@@ -82,7 +164,7 @@ Along the way, we identify an invariant which we call the Cup-Length Diagram, wh
 <p class="bottom-three">
 <span style="font-weight: bold;">The Gromov-Hausdorff distance between spheres</span>
 <br>
-We provide general upper and lower bounds for the Gromov-Hausdorff distance between m-sphere and n-sphere (endowed with the round metric) for m and n between zero and infinity. Some of these lower bounds are based on certain topological ideas related to the Borsuk-Ulam theorem. Via explicit constructions of (optimal) correspondences we prove that our lower bounds are tight in some cases. We also formulate a number of open  questions. Read more in [<a href="https://arxiv.org/abs/2105.00611">Lim, Mémoli and Smith, 2021</a>]
+We provide general upper and lower bounds for the Gromov-Hausdorff distance between m-sphere and n-sphere (endowed with the round metric) for m and n between zero and infinity. Some of these lower bounds are based on certain topological ideas related to the Borsuk-Ulam theorem. Via explicit constructions of (optimal) correspondences we prove that our lower bounds are tight in some cases. We also formulate a number of open  questions. Read more in [<a href="https://arxiv.org/abs/2105.00611">Lim, Mémoli and Smith, 2021</a>].
 <br>
 </p>
 
