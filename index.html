@@ -69,6 +69,81 @@ network data. Some aspects of these methods are listed below.<br /><br />
 Our research is supported by the following grants: <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1723003">NSF-DMS-1723003</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1901360">NSF-IIS-1901360</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1547357">NSF-DMS-1547357</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1740761">NSF-CCF-1740761</a>, <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839358">NSF-CCF-1839358</a> and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=1839356">NSF-CCF-1839356</a>.
 <br><br>
 
+
+<IMG SRC="figures/figure-spheres_gw.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">The Gromov-Wasserstein distance between spheres</span>
+<br>
+In this paper we consider a two-parameter family {dGWp,q} of GromovWasserstein distances between metric measure spaces. By exploiting a suitable interaction
+between specific values of the parameters p and q and the metric of the underlying spaces,
+we determine the exact value of the distance dGW4,2 between all pairs of unit spheres of
+different dimension endowed with their Euclidean distance and their uniform measure.
+See [<a href="https://arxiv.org/abs/2306.10586">Arya, Auddy, Edmonds, Lim, Mémoli and Packer, 2023</a>] for our work.
+<br>
+</p>
+
+<IMG SRC="figures/figure-simplicial_maps_laplacian.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">A Generalization of the Persistent Laplacian to Simplicial Maps</span>
+<br>
+The (combinatorial) graph Laplacian is a fundamental object in the analysis of, and optimization on, graphs. Via a topological view, this operator can be extended to a simplicial complex K and therefore offers a way to perform "signal processing" on p-(co)chains of K. Recently, the concept of persistent Laplacian was proposed and studied for a pair of simplicial complexes K ↪ L connected by an inclusion relation, further broadening the use of Laplace-based operators.
+In this paper, we significantly expand the scope of the persistent Laplacian by generalizing it to a pair of weighted simplicial complexes connected by a weight preserving simplicial map f: K → L. Such a simplicial map setting arises frequently, e.g., when relating a coarsened simplicial representation with an original representation, or the case when the two simplicial complexes are spanned by different point sets, i.e. cases in which it does not hold that K ⊂ L. However, the simplicial map setting is much more challenging than the inclusion setting since the underlying algebraic structure is much more complicated.
+We present a natural generalization of the persistent Laplacian to the simplicial setting. To shed insight on the structure behind it, as well as to develop an algorithm to compute it, we exploit the relationship between the persistent Laplacian and the Schur complement of a matrix. A critical step is to view the Schur complement as a functorial way of restricting a self-adjoint positive semi-definite operator to a given subspace. As a consequence of this relation, we prove that the qth persistent Betti number of the simplicial map f: K → L equals the nullity of the qth persistent Laplacian Δ_q^{K,L}. We then propose an algorithm for finding the matrix representation of Δ_q^{K,L} which in turn yields a fundamentally different algorithm for computing the qth persistent Betti number of a simplicial map. Finally, we study the persistent Laplacian on simplicial towers under weight-preserving simplicial maps and establish monotonicity results for their eigenvalues.
+See [<a href="https://drops.dagstuhl.de/opus/volltexte/2023/17887/">Gülen, Mémoli, Wan and Wang, 2023</a>] for our work.
+<br>
+</p>
+  
+<IMG SRC="figures/figure-ephemeral_points.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Ephemeral Persistence Features and the Stability of Filtered Chain Complexes</span>
+<br>
+We strengthen the usual stability theorem for Vietoris-Rips (VR) persistent homology of finite metric spaces by building upon constructions due to Usher and Zhang in the context of filtered chain complexes. The information present at the level of filtered chain complexes includes ephemeral points, i.e. points with zero persistence, which provide additional information to that present at homology level. The resulting invariant, called verbose barcode, which has a stronger discriminating power than the usual barcode, is proved to be stable under certain metrics which are sensitive to these ephemeral points. In some situations, we provide ways to compute such metrics between verbose barcodes. We also exhibit several examples of finite metric spaces with identical (standard) VR barcodes yet with different verbose VR barcodes thus confirming that these ephemeral points strengthen the discriminating power of the standard VR barcode.
+See [<a href="https://drops.dagstuhl.de/opus/volltexte/2023/17901/">Mémoli and Zhou, 2023</a>] for our work.
+<br>
+</p>
+
+<IMG SRC="figures/figure-diagram_of_diagrams.pdf" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Meta-Diagrams for 2-Parameter Persistence</span>
+<br>
+We first introduce the notion of meta-rank for a 2-parameter persistence module, an invariant that captures the information behind images of morphisms between 1D slices of the module. We then define the meta-diagram of a 2-parameter persistence module to be the Möbius inversion of the meta-rank, resulting in a function that takes values from signed 1-parameter persistence modules. We show that the meta-rank and meta-diagram contain information equivalent to the rank invariant and the signed barcode. This equivalence leads to computational benefits, as we introduce an algorithm for computing the meta-rank and meta-diagram of a 2-parameter module M indexed by a bifiltration of n simplices in O(n³) time. This implies an improvement upon the existing algorithm for computing the signed barcode, which has O(n⁴) time complexity. This also allows us to improve the existing upper bound on the number of rectangles in the rank decomposition of M from O(n⁴) to O(n³). In addition, we define notions of erosion distance between meta-ranks and between meta-diagrams, and show that under these distances, meta-ranks and meta-diagrams are stable with respect to the interleaving distance. Lastly, the meta-diagram can be visualized in an intuitive fashion as a persistence diagram of diagrams, which generalizes the well-understood persistence diagram in the 1-parameter setting.
+See [<a href="https://drops.dagstuhl.de/opus/volltexte/2023/17875/">Clause, Dey, Mémoli and Wang, 2023</a>] for our work.
+<br>
+</p>
+  
+<IMG SRC="figures/figure-extremal_polytope.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">EXTREMAL SPHERICAL POLYTOPES AND BORSUK’S CONJECTURE</span>
+<br>
+We generate anti-self-polar polytopes via a numerical implementation of the
+gradient flow induced by the diameter functional on the space of all finite subsets of the
+sphere, and prove related results on the critical points of the diameter functional as well as
+results about the combinatorics of such polytopes. We also discuss potential connections to
+Borsuk’s conjecture.
+See [<a href="https://arxiv.org/abs/2301.13076">Katz, Mémoli and Wang, 2023</a>] for our work.
+<br>
+</p>
+
+<IMG SRC="figures/figure-graph_homomorphism_sampling.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
+<p class="bottom-three">
+<span style="font-weight: bold;">Sampling random graph homomorphisms
+and applications to network data analysis</span>
+<br>
+A graph homomorphism is a map between two graphs that preserves adjacency relations.
+We consider the problem of sampling a random graph homomorphism from a graph into
+a large network. We propose two complementary MCMC algorithms for sampling random
+graph homomorphisms and establish bounds on their mixing times and the concentration
+of their time averages. Based on our sampling algorithms, we propose a novel framework
+for network data analysis that circumvents some of the drawbacks in methods based on
+independent and neighborhood sampling. Various time averages of the MCMC trajectory
+give us various computable observables, including well-known ones such as homomorphism
+density and average clustering coefficient and their generalizations. Furthermore, we show
+that these network observables are stable with respect to a suitably renormalized cut distance between networks. We provide various examples and simulations demonstrating our
+framework through synthetic networks. We also demonstrate the performance of our framework on the tasks of network clustering and subgraph classification on the Facebook100
+dataset and on Word Adjacency Networks of a set of classic novels.
+See [<a href="https://jmlr.org/papers/v24/20-449.html">Lyu, Mémoli and Sivakoff, 2023</a>] for our work.
+<br>
+</p>
   
 <IMG SRC="figures/figure-persistent_cup_figure.png" style="width: 220px;" hspace="20" vspace="0"  ALIGN="left" />
 <p class="bottom-three">
@@ -89,7 +164,7 @@ In addition, we consider a generalized notion of a persistent invariant, which e
 of abelian categories, and the recently-defined persistent cup-length invariant, and we establish their stability. 
 This generalized notion of persistent invariant also enables us to lift the Lyusternik-Schnirelmann (LS) category 
 of topological spaces to a novel stable persistent invariant of filtrations, called the persistent LS-category invariant.
-[<a href="https://arxiv.org/abs/2211.16642">Mémoli, Stefanou and Zhou 2022</a>] for our work.
+See [<a href="https://arxiv.org/abs/2211.16642">Mémoli, Stefanou and Zhou, 2022</a>] for our work.
 <br>
 </p> 
   
